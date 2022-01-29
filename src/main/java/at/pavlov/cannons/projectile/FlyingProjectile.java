@@ -37,7 +37,7 @@ public class FlyingProjectile
     private boolean teleported;
     //was the projectile fired by a player, redstone or a sentry
     private ProjectileCause projectileCause;
-
+    private boolean hasDetonated;
     private MovingObject predictor;
     private boolean hasDetonated = false;
 
