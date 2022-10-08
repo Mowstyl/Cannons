@@ -1,0 +1,26 @@
+[versions]
+# Platforms
+minecraft = "1.18.2-R0.1-SNAPSHOT"
+findbugs = "3.0.2"
+
+# Minecraft Plugins
+worldedit = "7.2.12"
+fawe = "2.4.7"
+
+# Gradle plugins
+paperweight = "1.3.7"
+
+[libraries]
+# Platform
+spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "minecraft" }
+findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "findbugs" }
+
+# Minecraft Plugins
+worldeditBukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldedit" }
+worldeditCore = { group = "com.sk89q.worldedit", name = "worldedit-core", version.ref = "worldedit" }
+fastasyncworldeditBukkit = { group = "com.fastasyncworldedit", name = "FastAsyncWorldEdit-Bukkit", version.ref = "fawe" }
+fastasyncworldeditCore = { group = "com.fastasyncworldedit", name = "FastAsyncWorldEdit-Core", version.ref = "fawe" }
+
+[plugins]
+# Gradle plugins
+paperweightUserdev = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
