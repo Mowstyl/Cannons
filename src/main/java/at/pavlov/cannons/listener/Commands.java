@@ -14,7 +14,6 @@ import at.pavlov.cannons.projectile.ProjectileStorage;
 import at.pavlov.cannons.utils.CannonsUtil;
 import com.google.common.base.Joiner;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -200,7 +199,7 @@ public class Commands implements TabExecutor
                                 cannon.show();
                             }
                             else
-                                sendMessage(sender, ChatColor.RED + "[Cannons] Design not found Available designs are: " + StringUtils.join(plugin.getMyConfig().getDesignStorage().getDesignIds(),", "));
+                                sendMessage(sender, ChatColor.RED + "[Cannons] Design not found Available designs are: " + String.join(", ", plugin.getMyConfig().getDesignStorage().getDesignIds()));
                         }
                         else
                             sendMessage(sender, ChatColor.RED + "[Cannons] Usage: '/cannons create <design>'");
@@ -228,7 +227,7 @@ public class Commands implements TabExecutor
                                 player.getInventory().addItem(projectile.getLoadingItem().toItemStack(amount));
                             }
                             else {
-                                sendMessage(sender, ChatColor.RED + "[Cannons] Design not found. Available designs are: " + StringUtils.join(ProjectileStorage.getProjectileIds(), ", "));
+                                sendMessage(sender, ChatColor.RED + "[Cannons] Design not found. Available designs are: " + String.join(", ", ProjectileStorage.getProjectileIds()));
                             }
                         }
                         else

@@ -287,8 +287,8 @@ public class CannonManager
 
     public MessageEnum renameCannon(Player player, Cannon cannon, String newCannonName)
     {
-        Validate.notNull(player, "player must not be null");
-        Validate.notNull(cannon, "cannon must not be null");
+        Objects.requireNonNull(player, "player must not be null");
+        Objects.requireNonNull(cannon, "cannon must not be null");
 
         //check some permissions
         if (cannon.getOwner() != null && !player.getUniqueId().equals(cannon.getOwner()))

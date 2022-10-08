@@ -5,7 +5,6 @@ import java.util.*;
 
 import at.pavlov.cannons.Enum.MessageEnum;
 import at.pavlov.cannons.projectile.Projectile;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -363,7 +362,7 @@ public class UserMessages {
 					}
 				}
 				if (names.size() > 0)
-					message = message.replace("WHITELIST", "\n " + ChatColor.GOLD + "  - " + StringUtils.join(names, "\n " + ChatColor.GOLD + "  - "));
+					message = message.replace("WHITELIST", "\n " + ChatColor.GOLD + "  - " + String.join("\n " + ChatColor.GOLD + "  - ", names));
 				else
 					message = message.replace("WHITELIST", ChatColor.GOLD + "none");
 			}

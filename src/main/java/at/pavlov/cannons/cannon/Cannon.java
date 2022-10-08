@@ -9,7 +9,6 @@ import at.pavlov.cannons.event.CannonUseEvent;
 import at.pavlov.cannons.Enum.InteractAction;
 import at.pavlov.cannons.projectile.ProjectileStorage;
 import at.pavlov.cannons.utils.CannonsUtil;
-import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -2345,7 +2344,7 @@ public class Cannon
      */
     public MessageEnum addObserver(Player player, boolean removeAfterShowing)
     {
-        Validate.notNull(player, "player must not be null");
+        Objects.requireNonNull(player, "player must not be null");
 
         //permission check
         if (!player.hasPermission(design.getPermissionObserver()))
@@ -2365,7 +2364,7 @@ public class Cannon
      */
     public MessageEnum removeObserver(Player player)
     {
-        Validate.notNull(player, "player must not be null");
+        Objects.requireNonNull(player, "player must not be null");
 
         observerMap.remove(player.getUniqueId());
         return MessageEnum.CannonObserverRemoved;
@@ -2389,7 +2388,7 @@ public class Cannon
      */
     public MessageEnum toggleObserver(Player player, boolean removeAfterShowing)
     {
-        Validate.notNull(player, "player must not be null");
+        Objects.requireNonNull(player, "player must not be null");
 
         if (observerMap.containsKey(player.getUniqueId()))
             return removeObserver(player);
@@ -2753,7 +2752,7 @@ public class Cannon
      */
     public MessageEnum addCannonOperator(Player player, Boolean masterCannon)
     {
-        Validate.notNull(player, "player must not be null");
+        Objects.requireNonNull(player, "player must not be null");
 
         //permission check
         if (!player.hasPermission(design.getPermissionAutoaim()))

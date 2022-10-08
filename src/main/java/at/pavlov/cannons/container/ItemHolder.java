@@ -2,6 +2,7 @@ package at.pavlov.cannons.container;
 
 import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
 import org.apache.commons.lang.StringUtils;
+import at.pavlov.cannons.Cannons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -233,7 +234,7 @@ public class ItemHolder
 	
 	public String toString()
 	{
-		return this.material + ":" + this.displayName + ":" + StringUtils.join(this.lore, ":");
+		return this.material + ":" + this.displayName + ":" + String.join(":", this.lore);
 	}
 
 	public Material getType()
