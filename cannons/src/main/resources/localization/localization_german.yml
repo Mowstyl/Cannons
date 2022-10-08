@@ -22,23 +22,23 @@ Error:
   PlayerNotFound: 'RED [Cannons] Spielername nicht vorhanden.'
 
 
-Commands:
-  SelectCannon: 'YELLOW [Cannons] Bitte Kanone auswählen.'
-    SelectBlock: 'YELLOW [Cannons] Bitte Block auswählen.'
-  SelectCanceled: 'RED [Cannons] Auswahl abgebrochen.'
-  CannonNotFound: 'RED [Cannons] Kanone existiert nicht.'
-  NoSentryWhitelist: 'RED [Cannons] Whitelist funktioniert nur bei Sentrykanonen.'
-  AddedWhitelist: 'GREEN [Cannons] LASTWHITELISTED zur Whitelist von CANNON hinzugefügt'
-  RemovedWhitelist: 'GREEN [Cannons] LASTWHITELISTED von Whitelist entfernt'
-  RemovedWhitelistOwner: 'YELLOW [Cannons] Besitzer von CANNON kann nicht von der Whitelist entfernt werden'
-  ToggledTargetMob: 'GOLD [Cannons] Sentry erkennt Monster als Ziel: TARGET_MOB'
-  ToggledTargetPlayer: 'GOLD [Cannons] Sentry erkennt Spieler als Ziel: TARGET_PLAYER'
-  ToggledTargetCannon: 'GOLD [Cannons] Sentry erkennt Kanonen als Ziel: TARGET_CANNON'
-  ToggledTargetOther: 'GOLD [Cannons] Sentry erkennt andere Dinge als Ziel: TARGET_OTHER'
-  BuyCannon: 'YELLOW [Cannons] Klicke die Kanone um sie zu kaufen.'
-  PaidCannon: 'GREEN [Cannons] Kanonenabgabe bezahlt. GOLD BUILD_COSTS GREEN wurde von deinem Konto abgebucht.'
-  ClaimCannonsStarted: 'YELLOW [Cannons] Inbesitznahme alle Kanonen in der Umgebung gestartet. Bitte warten'
-  ClaimCannonsFinished: 'GREEN [Cannons] Vorgang abgeschlossen.'
+Commands :
+  SelectCannon : 'YELLOW [Cannons] Bitte Kanone auswählen.'
+  SelectBlock : 'YELLOW [Cannons] Bitte Block auswählen.'
+  SelectCanceled : 'RED [Cannons] Auswahl abgebrochen.'
+  CannonNotFound : 'RED [Cannons] Kanone existiert nicht.'
+  NoSentryWhitelist : 'RED [Cannons] Whitelist funktioniert nur bei Sentrykanonen.'
+  AddedWhitelist : 'GREEN [Cannons] LASTWHITELISTED zur Whitelist von CANNON hinzugefügt'
+  RemovedWhitelist : 'GREEN [Cannons] LASTWHITELISTED von Whitelist entfernt'
+  RemovedWhitelistOwner : 'YELLOW [Cannons] Besitzer von CANNON kann nicht von der Whitelist entfernt werden'
+  ToggledTargetMob : 'GOLD [Cannons] Sentry erkennt Monster als Ziel: TARGET_MOB'
+  ToggledTargetPlayer : 'GOLD [Cannons] Sentry erkennt Spieler als Ziel: TARGET_PLAYER'
+  ToggledTargetCannon : 'GOLD [Cannons] Sentry erkennt Kanonen als Ziel: TARGET_CANNON'
+  ToggledTargetOther : 'GOLD [Cannons] Sentry erkennt andere Dinge als Ziel: TARGET_OTHER'
+  BuyCannon : 'YELLOW [Cannons] Klicke die Kanone um sie zu kaufen.'
+  PaidCannon : 'GREEN [Cannons] Kanonenabgabe bezahlt. GOLD BUILD_COSTS GREEN wurde von deinem Konto abgebucht.'
+  ClaimCannonsStarted : 'YELLOW [Cannons] Inbesitznahme alle Kanonen in der Umgebung gestartet. Bitte warten'
+  ClaimCannonsFinished : 'GREEN [Cannons] Vorgang abgeschlossen.'
 
 
 Aiming:
