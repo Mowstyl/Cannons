@@ -11,7 +11,6 @@ import at.pavlov.cannons.utils.CannonsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -40,45 +39,40 @@ public class ProjectileObserver {
     public void setupScheduler()
     {
         //changing angles for aiming mode
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-        {
-            public void run()
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            //get projectiles
+            Iterator<Map.Entry<UUID,FlyingProjectile>> iter = plugin.getProjectileManager().getFlyingProjectiles().entrySet().iterator();
+            while(iter.hasNext())
             {
-                //get projectiles
-                Iterator<Map.Entry<UUID,FlyingProjectile>> iter = plugin.getProjectileManager().getFlyingProjectiles().entrySet().iterator();
-                while(iter.hasNext())
+                FlyingProjectile cannonball = iter.next().getValue();
+                org.bukkit.entity.Projectile projectile_entity = cannonball.getProjectileEntity();
+                //remove an not valid projectile
+                if (!cannonball.isValid(projectile_entity))
                 {
-                    FlyingProjectile cannonball = iter.next().getValue();
-                    org.bukkit.entity.Projectile projectile_entity = cannonball.getProjectileEntity();
-                    //remove an not valid projectile
-                    if (!cannonball.isValid(projectile_entity))
+                    //teleport the observer back to its start position
+                    CannonsUtil.teleportBack(cannonball);
+                    if (projectile_entity != null)
                     {
-                        //teleport the observer back to its start position
-                        CannonsUtil.teleportBack(cannonball);
-                        if (projectile_entity != null)
-                        {
-                            Location l = projectile_entity.getLocation();
-                            projectile_entity.remove();
-                            plugin.logDebug("removed Projectile at " + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ() + " because it was not valid.");
-                        }
-                        else
-                            plugin.logDebug("removed Projectile at because the entity was missing");
-                        //remove entry in hashmap
-                        iter.remove();
-                        continue;
+                        Location l = projectile_entity.getLocation();
+                        projectile_entity.remove();
+                        plugin.logDebug("removed Projectile at " + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ() + " because it was not valid.");
                     }
-
-                    //update the cannonball
-                    checkWaterImpact(cannonball, projectile_entity);
-                    updateTeleporter(cannonball, projectile_entity);
-                    updateSmokeTrail(cannonball, projectile_entity);
-                    if (updateProjectileLocation(cannonball, projectile_entity)) {
-                        iter.remove();
-                        continue;
-                    }
+                    else
+                        plugin.logDebug("removed Projectile at because the entity was missing");
+                    //remove entry in hashmap
+                    iter.remove();
+                    continue;
                 }
 
+                //update the cannonball
+                checkWaterImpact(cannonball, projectile_entity);
+                updateTeleporter(cannonball, projectile_entity);
+                updateSmokeTrail(cannonball, projectile_entity);
+                if (updateProjectileLocation(cannonball, projectile_entity)) {
+                    iter.remove();
+                }
             }
+
         }, 1L, 1L);
     }
 

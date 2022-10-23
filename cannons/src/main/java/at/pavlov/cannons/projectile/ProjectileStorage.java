@@ -30,7 +30,7 @@ public class ProjectileStorage
 	public ProjectileStorage(Cannons plugin)
 	{
 		this.plugin = plugin;
-		projectileList = new ArrayList<Projectile>();
+		projectileList = new ArrayList<>();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class ProjectileStorage
 	 * @return list of all projectiles names
 	 */
 	public static ArrayList<String> getProjectileIds(){
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (Projectile proj : projectileList){
 			list.add(proj.getProjectileId());
 		}
@@ -145,7 +145,7 @@ public class ProjectileStorage
 	 */
 	private ArrayList<String> getProjectilesFiles()
 	{
-		ArrayList<String> projectileList = new ArrayList<String>();
+		ArrayList<String> projectileList = new ArrayList<>();
 
 		try
 		{
@@ -348,7 +348,7 @@ public class ProjectileStorage
 	 */
 	private List<PotionEffectType> toPotionEffect(List<String> stringList)
 	{
-		List<PotionEffectType> effectList = new ArrayList<PotionEffectType>();
+		List<PotionEffectType> effectList = new ArrayList<>();
 
 		for (String str : stringList)
 		{
@@ -368,7 +368,7 @@ public class ProjectileStorage
 	 */
 	private List<ProjectileProperties> toProperties(List<String> stringList)
 	{
-		List<ProjectileProperties> projectileList = new ArrayList<ProjectileProperties>();
+		List<ProjectileProperties> projectileList = new ArrayList<>();
 
 		for (String str : stringList)
 		{
@@ -390,7 +390,7 @@ public class ProjectileStorage
 	 */
 	private List<Integer> toColor(List<String> stringList)
 	{
-		List<Integer> colorList = new ArrayList<Integer>();
+		List<Integer> colorList = new ArrayList<>();
 
 		for (String str : stringList)
 		{

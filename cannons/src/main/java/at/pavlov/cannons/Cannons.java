@@ -1,6 +1,5 @@
 package at.pavlov.cannons;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -154,24 +153,20 @@ public final class Cannons extends JavaPlugin
 			config.loadConfig();
 
 			// Initialize the database
-			getServer().getScheduler().runTaskAsynchronously(this, new Runnable()
-			{
-				public void run()
-				{
-					try {
-						openConnection();
-						Statement statement = connection.createStatement();
-						statement.close();
-						getPlugin().logInfo("Connected to database");
-					} catch (ClassNotFoundException | SQLException e) {
-						e.printStackTrace();
-					}
-					//create the tables for the database in case they don't exist
-					persistenceDatabase.createTables();
-					// load cannons from database
-					persistenceDatabase.loadCannons();
-				}
-			});
+			getServer().getScheduler().runTaskAsynchronously(this, () -> {
+                try {
+                    openConnection();
+                    Statement statement = connection.createStatement();
+                    statement.close();
+                    getPlugin().logInfo("Connected to database");
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.printStackTrace();
+                }
+                //create the tables for the database in case they don't exist
+                persistenceDatabase.createTables();
+                // load cannons from database
+                persistenceDatabase.loadCannons();
+            });
 
 
 			// setting up Aiming Mode Task
@@ -181,13 +176,8 @@ public final class Cannons extends JavaPlugin
             fakeBlockHandler.setupScheduler();
 
 			// save cannons
-			getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
-			{
-				public void run()
-				{
-					persistenceDatabase.saveAllCannons(true);
-				}
-			}, 6000L, 6000L);
+			getServer().getScheduler().scheduleSyncRepeatingTask(this,
+                    () -> persistenceDatabase.saveAllCannons(true), 6000L, 6000L);
 
             logDebug("Time to enable cannons: " + new DecimalFormat("0.00").format((System.nanoTime() - startTime)/1000000.0) + "ms");
 
@@ -262,7 +252,7 @@ public final class Cannons extends JavaPlugin
 		return this.isEnabled();
 	}
 
-	public final Config getMyConfig()
+	public Config getMyConfig()
 	{
 		return config;
 	}

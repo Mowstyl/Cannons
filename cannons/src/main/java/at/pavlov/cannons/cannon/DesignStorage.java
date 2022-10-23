@@ -7,14 +7,10 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.extent.transform.BlockTransformExtent;
-import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
-import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
@@ -59,7 +55,7 @@ public class DesignStorage
 	 * @return list of all cannon design names
 	 */
 	public ArrayList<String> getDesignIds(){
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (CannonDesign design : cannonDesignList){
 			list.add(design.getDesignID());
 		}
@@ -130,7 +126,7 @@ public class DesignStorage
 	 */
 	private ArrayList<DesignFileName> getDesignFiles()
 	{
-		ArrayList<DesignFileName> designList = new ArrayList<DesignFileName>();
+		ArrayList<DesignFileName> designList = new ArrayList<>();
 
 		try
 		{
@@ -408,7 +404,7 @@ public class DesignStorage
 		BlockData blockRightClickTrigger = cannonDesign.getSchematicBlockTypeRightClickTrigger();
 		BlockData replaceRedstoneTrigger = cannonDesign.getIngameBlockTypeRedstoneTrigger();
 		BlockData replaceRightClickTrigger = cannonDesign.getIngameBlockTypeRightClickTrigger();
-        List<BlockData> blockProtectedList = new ArrayList<BlockData>(cannonDesign.getSchematicBlockTypeProtected());
+        List<BlockData> blockProtectedList = new ArrayList<>(cannonDesign.getSchematicBlockTypeProtected());
 		
 		
 		// get facing of the cannon

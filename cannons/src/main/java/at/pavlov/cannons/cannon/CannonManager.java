@@ -33,8 +33,8 @@ import at.pavlov.cannons.event.CannonBeforeCreateEvent;
 
 public class CannonManager
 {
-    private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<UUID, Cannon>();
-    private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<String, UUID>();
+    private static final ConcurrentHashMap<UUID, Cannon> cannonList = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, UUID> cannonNameMap = new ConcurrentHashMap<>();
     private static final Cache<Location, Cannon> cannonCache = CacheBuilder.newBuilder()
             .expireAfterWrite(30, TimeUnit.SECONDS)
             .maximumSize(2048)
@@ -198,18 +198,10 @@ public class CannonManager
                     OfflinePlayer offplayer = Bukkit.getOfflinePlayer(cannon.getOwner());
                     if (offplayer != null && offplayer.hasPlayedBefore() && plugin.getEconomy() != null) {
                         // return message
-                        double funds;
-                        switch (cause) {
-                            case Other:
-                                funds = cannon.getCannonDesign().getEconomyDismantlingRefund();
-                                break;
-                            case Dismantling:
-                                funds = cannon.getCannonDesign().getEconomyDismantlingRefund();
-                                break;
-                            default:
-                                funds = cannon.getCannonDesign().getEconomyDestructionRefund();
-                                break;
-                        }
+                        double funds = switch (cause) {
+                            case Other, Dismantling -> cannon.getCannonDesign().getEconomyDismantlingRefund();
+                            default -> cannon.getCannonDesign().getEconomyDestructionRefund();
+                        };
                         if (cannon.isPaid())
                             plugin.getEconomy().depositPlayer(offplayer, funds);
                     }
@@ -294,7 +286,7 @@ public class CannonManager
             return MessageEnum.ErrorNotTheOwner;
         if (!player.hasPermission(cannon.getCannonDesign().getPermissionRename()))
             return MessageEnum.PermissionErrorRename;
-        if (newCannonName == null || !isCannonNameUnique(newCannonName))
+        if (!isCannonNameUnique(newCannonName))
             return MessageEnum.CannonRenameFail;
 
         //put the new name
@@ -360,7 +352,7 @@ public class CannonManager
      */
     public static HashSet<Cannon> getCannonsInSphere(Location center, double sphereRadius)
     {
-        HashSet<Cannon> newCannonList = new HashSet<Cannon>();
+        HashSet<Cannon> newCannonList = new HashSet<>();
 
         for (Cannon cannon : getCannonList().values()) {
             if (cannon.getWorld().equals(center.getWorld().getUID())) {
@@ -382,7 +374,7 @@ public class CannonManager
      */
     public static HashSet<Cannon> getCannonsInBox(Location center, double lengthX, double lengthY, double lengthZ)
     {
-        HashSet<Cannon> newCannonList = new HashSet<Cannon>();
+        HashSet<Cannon> newCannonList = new HashSet<>();
 
         for (Cannon cannon : getCannonList().values())
         {
@@ -414,7 +406,7 @@ public class CannonManager
      */
     public static HashSet<Cannon> getCannonsByLocations(List<Location> locations)
     {
-        HashSet<Cannon> newCannonList = new HashSet<Cannon>();
+        HashSet<Cannon> newCannonList = new HashSet<>();
         for (Cannon cannon : getCannonList().values())
         {
             for (Location loc : locations)
@@ -436,7 +428,7 @@ public class CannonManager
      */
     public HashSet<Cannon> getCannons(List<Location> locations, UUID player, boolean silent)
     {
-        HashSet<Cannon> newCannonList = new HashSet<Cannon>();
+        HashSet<Cannon> newCannonList = new HashSet<>();
         for (Location loc : locations)
         {
             Cannon newCannon = getCannon(loc, player, silent);

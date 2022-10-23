@@ -24,7 +24,7 @@ public class Projectile implements Cloneable{
 	private String itemName;
 	private ItemHolder loadingItem;
 	//list of items or blocks that can represent this this (e.g. redstone dust may for wire when you click a block)
-	private List<ItemHolder> alternativeItemList = new ArrayList<ItemHolder>();
+	private List<ItemHolder> alternativeItemList = new ArrayList<>();
 
 	//properties of the cannonball
 	private EntityType projectileEntity;
@@ -37,7 +37,7 @@ public class Projectile implements Cloneable{
 	private int numberOfBullets;
 	private double spreadMultiplier;
 	private int sentryIgnoredBlocks;
-	private List<ProjectileProperties> propertyList = new ArrayList<ProjectileProperties>();
+	private List<ProjectileProperties> propertyList = new ArrayList<>();
 
 	//smokeTrail
 	private boolean smokeTrailEnabled;
@@ -64,7 +64,7 @@ public class Projectile implements Cloneable{
 	private double potionRange;
 	private double potionDuration;
 	private int potionAmplifier;
-	private List<PotionEffectType> potionsEffectList = new ArrayList<PotionEffectType>();
+	private List<PotionEffectType> potionsEffectList = new ArrayList<>();
 	private boolean impactIndicator;
 
 	//cluster
@@ -81,8 +81,8 @@ public class Projectile implements Cloneable{
 	private double spawnBlockRadius;
 	private double spawnEntityRadius;
 	private double spawnVelocity;
-	private List<SpawnMaterialHolder> spawnBlocks = new ArrayList<SpawnMaterialHolder>();
-	private List<SpawnEntityHolder> spawnEntities = new ArrayList<SpawnEntityHolder>();
+	private List<SpawnMaterialHolder> spawnBlocks = new ArrayList<>();
+	private List<SpawnEntityHolder> spawnEntities = new ArrayList<>();
 	private List<String> spawnProjectiles;
 
 	//spawn Fireworks
@@ -103,7 +103,7 @@ public class Projectile implements Cloneable{
 	private SoundHolder soundImpactWater;
 
 	//permissions
-	private List<String> permissionLoad = new ArrayList<String>();
+	private List<String> permissionLoad = new ArrayList<>();
 
 	// CCNet
 	private int numberOfCharges;

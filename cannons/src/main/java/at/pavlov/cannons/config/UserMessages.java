@@ -1,6 +1,7 @@
 package at.pavlov.cannons.config;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import at.pavlov.cannons.Enum.MessageEnum;
@@ -22,7 +23,7 @@ public class UserMessages {
 	private File customLanguageFile = null;
 	
 	
-	private final HashMap<String, String> messageMap = new HashMap<String, String>();
+	private final HashMap<String, String> messageMap = new HashMap<>();
 
 
 	private final Cannons plugin;
@@ -131,15 +132,13 @@ public class UserMessages {
 	    customLanguage = YamlConfiguration.loadConfiguration(customLanguageFile);
 	 
 	    // Look for defaults in the jar
-        try {
-            Reader defConfigStream = new InputStreamReader(plugin.getResource("localization/" + filename + ".yml"), "UTF8");
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-            customLanguage.setDefaults(defConfig);
-        } catch (UnsupportedEncodingException e) {
-            plugin.logSevere("Unsupported encoding: " + e);
-        }
+        Reader defConfigStream = new InputStreamReader(plugin.getResource("localization/" + filename + ".yml"),
+                StandardCharsets.UTF_8
+        );
+        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+        customLanguage.setDefaults(defConfig);
 
-	}
+    }
 
 
 	private String getDataFolder()
@@ -354,7 +353,7 @@ public class UserMessages {
 			}
 			// show whitelist
 			if (cannon.getWhitelist() != null){
-				List<String> names = new ArrayList<String>();
+				List<String> names = new ArrayList<>();
 				for (UUID playerUID : cannon.getWhitelist()){
 					OfflinePlayer offplayer = Bukkit.getOfflinePlayer(playerUID);
 					if (offplayer != null) {
@@ -389,18 +388,12 @@ public class UserMessages {
 	 */
 	public String getDeathMessage(UUID killed, UUID shooter, Cannon cannon, Projectile projectile){
 		Random rand = new Random();
-		MessageEnum messageEnum;
-		switch (rand.nextInt(3)){
-			case 1:
-				messageEnum = MessageEnum.DeathMessage2;
-				break;
-			case 2:
-				messageEnum = MessageEnum.DeathMessage3;
-				break;
-			default:
-				messageEnum = MessageEnum.DeathMessage1;
-		}
-		Player killedPlayer = null;
+		MessageEnum messageEnum = switch (rand.nextInt(3)) {
+            case 1 -> MessageEnum.DeathMessage2;
+            case 2 -> MessageEnum.DeathMessage3;
+            default -> MessageEnum.DeathMessage1;
+        };
+        Player killedPlayer = null;
 		if (killed != null) {
 			killedPlayer = Bukkit.getPlayer(killed);
 		}

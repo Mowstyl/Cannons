@@ -46,7 +46,7 @@ public class SpawnEntityHolder{
             }
             if (result.group(4) != null) {
                 // search for curly braces in as parameter
-                Pattern p = Pattern.compile("(?<=\\{)(.+)(?=\\})");
+                Pattern p = Pattern.compile("(?<=\\{)(.+)(?=})");
                 Matcher m = p.matcher(result.group(4));
                 String strdata = null;
                 if(m.find())
@@ -58,9 +58,9 @@ public class SpawnEntityHolder{
 
                 // convert entity data to map. Split the arguments by comma, but don't split inside parentheses []
                 // {Particle:"entity_effect",Radius:5f,Duration:300,Color:16711680,Effects:[{Id:2b,Amplifier:3b,Duration:300,ShowParticles:0b},{Id:7b,Amplifier:1b,Duration:20,ShowParticles:0b},{Id:9b,Amplifier:2b,Duration:300,ShowParticles:0b},{Id:19b,Amplifier:2b,Duration:300,ShowParticles:0b}]}
-                for (String s1 : strdata.split("(?![^)(]*\\([^)(]*?\\)\\)),(?![^\\[]*\\])")){
+                for (String s1 : strdata.split("(?![^)(]*\\([^)(]*?\\)\\)),(?![^\\[]*])")){
                     // separate in type and argument EFFECTS:1b
-                    String[] s2 = s1.split(":(?![^\\[]*\\])");
+                    String[] s2 = s1.split(":(?![^\\[]*])");
                     // check if there are argument and value
                     if (s2.length > 1){
                         boolean found = false;
@@ -72,7 +72,7 @@ public class SpawnEntityHolder{
 
                             // isolate every effect inside the parentheses for every potion effect
                             // {Id:2b,Amplifier:3b,Duration:300,ShowParticles:0b},{Id:7b,Amplifier:1b,Duration:20,ShowParticles:0b},{Id:9b,Amplifier:2b,Duration:300,ShowParticles:0b},{Id:19b,Amplifier:2b,Duration:300,ShowParticles:0b}
-                            for (String effect : effects.split(",(?![^\\{]*\\})")) {
+                            for (String effect : effects.split(",(?![^{]*})")) {
                                 PotionEffectType type = null;
                                 int duration = 0;
                                 int amplifier = 0;
@@ -81,34 +81,21 @@ public class SpawnEntityHolder{
                                 boolean icon = true;
                                 // remove the curly braces and split bei comma
                                 // {Id:2b,Amplifier:3b,Duration:300,ShowParticles:0b}
-                                for (String arg : effect.replaceAll("[\\{\\}]","").split(",")) {
+                                for (String arg : effect.replaceAll("[{}]","").split(",")) {
                                     // split between argument and value
-                                    String s3[] = arg.split(":");
+                                    String[] s3 = arg.split(":");
                                     if (s3.length > 1) {
                                         // check arguments type, duration, amplifier, ambient, particles, icon
                                         String val = s3[1].replaceAll("b","");
-                                        switch (s3[0].toLowerCase())
-                                        {
-                                            case "id":
-                                                type = PotionEffectType.getById(Integer.parseInt(val));
-                                                break;
-                                            case "duration":
-                                                duration = Integer.parseInt(val);
-                                                break;
-                                            case "amplifier":
-                                                amplifier = Integer.parseInt(val);
-                                                break;
-                                            case "ambient":
-                                                ambient = Boolean.parseBoolean(val);
-                                                break;
-                                            case "showparticles":
-                                                particles = Boolean.parseBoolean(val);
-                                                break;
-                                            case "icon":
-                                                icon = Boolean.parseBoolean(val);
-                                                break;
-                                            default:
-                                                System.out.println("[Cannons] '" + s3[0] + "' is not a correct potion effect argument. See Bukkit PotionType");
+                                        switch (s3[0].toLowerCase()) {
+                                            case "id" -> type = PotionEffectType.getById(Integer.parseInt(val));
+                                            case "duration" -> duration = Integer.parseInt(val);
+                                            case "amplifier" -> amplifier = Integer.parseInt(val);
+                                            case "ambient" -> ambient = Boolean.parseBoolean(val);
+                                            case "showparticles" -> particles = Boolean.parseBoolean(val);
+                                            case "icon" -> icon = Boolean.parseBoolean(val);
+                                            default ->
+                                                    System.out.println("[Cannons] '" + s3[0] + "' is not a correct potion effect argument. See Bukkit PotionType");
                                         }
                                     }
                                 }

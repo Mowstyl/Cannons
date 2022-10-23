@@ -2,30 +2,21 @@ package at.pavlov.cannons.scheduler;
 
 import at.pavlov.cannons.Cannons;
 import at.pavlov.cannons.Enum.FakeBlockType;
-import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.container.FakeBlockEntry;
-import at.pavlov.cannons.container.ItemHolder;
-import at.pavlov.cannons.listener.Commands;
-import at.pavlov.cannons.utils.CannonsUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 
 public class FakeBlockHandler {
     private final Cannons plugin;
 
-    private ArrayList<FakeBlockEntry> list = new ArrayList<FakeBlockEntry>();
+    private final ArrayList<FakeBlockEntry> list = new ArrayList<>();
 
     private long lastAiming;
     private long lastImpactPredictor;
@@ -46,13 +37,9 @@ public class FakeBlockHandler {
     public void setupScheduler()
     {
         //changing angles for aiming mode
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-        {
-            public void run() {
-                removeOldBlocks();
-                removeOldBlockType();
-            }
-
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            removeOldBlocks();
+            removeOldBlockType();
         }, 1L, 1L);
     }
 
@@ -227,10 +214,8 @@ public class FakeBlockHandler {
             return false;
 
         double dist = player.getLocation().distance(loc);
-        if (dist > plugin.getMyConfig().getImitatedBlockMinimumDistance() &&
-            dist < plugin.getMyConfig().getImitatedBlockMaximumDistance())
-            return true;
-        return false;
+        return dist > plugin.getMyConfig().getImitatedBlockMinimumDistance() &&
+                dist < plugin.getMyConfig().getImitatedBlockMaximumDistance();
     }
 
     /**
@@ -245,9 +230,7 @@ public class FakeBlockHandler {
             return false;
 
         double dist = player.getLocation().distance(loc);
-        if (dist < plugin.getMyConfig().getImitatedBlockMaximumDistance())
-            return true;
-        return false;
+        return dist < plugin.getMyConfig().getImitatedBlockMaximumDistance();
     }
 
 }

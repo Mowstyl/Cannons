@@ -25,7 +25,7 @@ public class LoadCannonTask extends BukkitRunnable{
 
     @Override
     public void run() {
-        ArrayList<UUID> invalid = new ArrayList<UUID>();
+        ArrayList<UUID> invalid = new ArrayList<>();
         int i = 0;
 
         try (Statement statement = Cannons.getPlugin().getConnection().createStatement()) {

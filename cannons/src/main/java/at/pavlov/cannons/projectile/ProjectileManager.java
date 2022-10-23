@@ -112,7 +112,7 @@ public class ProjectileManager
      */
     public void detonateProjectile(Entity projectile, BlockFace hitBlockFace)
     {
-        if(projectile == null || !(projectile instanceof org.bukkit.entity.Projectile))
+        if(!(projectile instanceof org.bukkit.entity.Projectile))
             return;
 
         FlyingProjectile fproj = flyingProjectilesMap.get(projectile.getUniqueId());

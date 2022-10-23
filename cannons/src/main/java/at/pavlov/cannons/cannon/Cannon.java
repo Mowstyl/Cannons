@@ -87,7 +87,7 @@ public class Cannon
     // tracking entity
     private UUID sentryEntity;
     // store older targets, so we do not target the same all the time
-    private ArrayList<UUID> sentryEntityHistory;
+    private final ArrayList<UUID> sentryEntityHistory;
     // how long this entity is targeted by this cannon
     private long sentryTargetingTime;
     // last time loading was tried and failed. Wait some time before trying again
@@ -110,10 +110,10 @@ public class Cannon
 
     //observer will see the impact of the target predictor
     //<Player name, remove after showing impact>
-    private HashMap<UUID, Boolean> observerMap = new HashMap<UUID, Boolean>();
+    private final HashMap<UUID, Boolean> observerMap = new HashMap<>();
 
     //a sentry cannon will not target a whitelisted player
-    private HashSet<UUID> whitelist = new HashSet<UUID>();
+    private final HashSet<UUID> whitelist = new HashSet<>();
 
     // player who has build this cannon
     private UUID owner;
@@ -174,7 +174,7 @@ public class Cannon
         this.velocity = new Vector(0, 0, 0);
 
         this.sentryEntity = null;
-        sentryEntityHistory = new ArrayList<UUID>();
+        sentryEntityHistory = new ArrayList<>();
         sentryTargetingTime = 0;
         sentryLastLoadingFailed = 0;
 
@@ -393,7 +393,7 @@ public class Cannon
     List<Inventory> getInventoryList()
     {
         //get the inventories of all attached chests
-        List<Inventory> invlist = new ArrayList<Inventory>();
+        List<Inventory> invlist = new ArrayList<>();
         for (Location loc : getCannonDesign().getChestsAndSigns(this))
         {
             // check if block is a chest
@@ -505,40 +505,24 @@ public class Cannon
         }
 
         // the cannon was loaded with gunpowder - lets get it form the player
-        switch(returnVal)
-        {
-	        case loadGunpowder:
-	        {
-	        	// take item from the player
+        switch (returnVal) {
+            case loadGunpowder, loadGunpowderNormalLimit -> {
+                // take item from the player
                 CannonsUtil.playSound(getMuzzle(), design.getSoundGunpowderLoading());
-	            if (design.isGunpowderConsumption()&&!design.isAmmoInfiniteForPlayer())
-                    if (design.isGunpowderConsumption()&&!design.isAmmoInfiniteForPlayer())
+                if (design.isGunpowderConsumption() && !design.isAmmoInfiniteForPlayer())
+                    if (design.isGunpowderConsumption() && !design.isAmmoInfiniteForPlayer())
                         InventoryManagement.removeItem(player.getInventory(), design.getGunpowderType().toItemStack(gunpowder));
                     else
-	                    InventoryManagement.takeFromPlayerHand(player, gunpowder);
-	        	break;
-	        }
-	        case loadGunpowderNormalLimit:
-	        {
-                CannonsUtil.playSound(getMuzzle(), design.getSoundGunpowderLoading());
-	            if (design.isGunpowderConsumption()&&!design.isAmmoInfiniteForPlayer())
-                    if (design.isGunpowderConsumption()&&!design.isAmmoInfiniteForPlayer())
-                        InventoryManagement.removeItem(player.getInventory(), design.getGunpowderType().toItemStack(gunpowder));
-                    else
-	                    InventoryManagement.takeFromPlayerHand(player, gunpowder);
-	        	break;
-	        }
-	        case loadOverloadedGunpowder:
-	        {
+                        InventoryManagement.takeFromPlayerHand(player, gunpowder);
+            }
+            case loadOverloadedGunpowder -> {
                 CannonsUtil.playSound(getMuzzle(), design.getSoundGunpowderOverloading());
-	            if (design.isGunpowderConsumption()&&!design.isAmmoInfiniteForPlayer())
-	                InventoryManagement.takeFromPlayerHand(player, gunpowder);
-	        	break;
-	        }
-	        default:
-	        {
-	            CannonsUtil.playErrorSound(getMuzzle());
-	        }
+                if (design.isGunpowderConsumption() && !design.isAmmoInfiniteForPlayer())
+                    InventoryManagement.takeFromPlayerHand(player, gunpowder);
+            }
+            default -> {
+                CannonsUtil.playErrorSound(getMuzzle());
+            }
         }
         return returnVal;
 
@@ -742,30 +726,20 @@ public class Cannon
         if(message != null)
         {
             if(message.isError()) CannonsUtil.playErrorSound(getMuzzle());
-            else switch(message)
-            {
-                case RamrodCleaning:
-                {
+            else switch (message) {
+                case RamrodCleaning -> {
                     CannonsUtil.playSound(getMuzzle(), design.getSoundRamrodCleaning());
-                    break;
                 }
-                case RamrodCleaningDone:
-                {
+                case RamrodCleaningDone -> {
                     CannonsUtil.playSound(getMuzzle(), design.getSoundRamrodCleaningDone());
-                    break;
                 }
-                case RamrodPushingProjectile:
-                {
+                case RamrodPushingProjectile -> {
                     CannonsUtil.playSound(getMuzzle(), design.getSoundRamrodPushing());
-                    break;
                 }
-                case RamrodPushingProjectileDone:
-                {
+                case RamrodPushingProjectileDone -> {
                     CannonsUtil.playSound(getMuzzle(), design.getSoundRamrodPushingDone());
-                    break;
                 }
-                default:
-                    CannonsUtil.playErrorSound(getMuzzle());
+                default -> CannonsUtil.playErrorSound(getMuzzle());
             }
         }
         return message;
@@ -867,17 +841,12 @@ public class Cannon
             dropCharge();
 
         // return message
-        switch (cause)
-        {
-            case Overheating:
-                return MessageEnum.HeatManagementOverheated;
-            case Other:
-                return null;
-            case Dismantling:
-                return MessageEnum.CannonDismantled;
-            default:
-                return MessageEnum.CannonDestroyed;
-        }
+        return switch (cause) {
+            case Overheating -> MessageEnum.HeatManagementOverheated;
+            case Other -> null;
+            case Dismantling -> MessageEnum.CannonDismantled;
+            default -> MessageEnum.CannonDestroyed;
+        };
     }
 
     /**
@@ -1717,8 +1686,7 @@ public class Cannon
      */
     public boolean equals(CannonDesign cannonDesign)
     {
-        if (designID.equals(cannonDesign.getDesignID())) return true;
-        return false;
+        return designID.equals(cannonDesign.getDesignID());
     }
 
     /**
@@ -1729,8 +1697,7 @@ public class Cannon
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof Cannon) {
-            Cannon obj2 = (Cannon) obj;
+        if (obj instanceof Cannon obj2) {
             return this.getUID().equals(obj2.getUID());
         }
         return false;
@@ -2149,7 +2116,7 @@ public class Cannon
     }
 
     public void setProjectilePushed(int projectilePushed) {
-        this.projectilePushed = (projectilePushed>0)?projectilePushed:0;
+        this.projectilePushed = Math.max(projectilePushed, 0);
         this.hasUpdated();
     }
 
@@ -2436,9 +2403,7 @@ public class Cannon
 	{
         double chance = getOverloadingExplosionChance();
         //Cannons.getPlugin().logDebug("Chance of explosion (overloading) = " + design.getOverloadingChangeInc() + " * ((" + loadedGunpowder + " ( may to be - " + design.getMaxLoadableGunpowder_Normal() + ")) * " + design.getOverloadingChanceOfExplosionPerGunpowder() + ") ^ " + design.getOverloadingExponent() + " (may to be multiplied by " + tempValue + " / " + design.getMaximumTemperature() + " = " + chance);
-        if(Math.random()<chance)
-            return true;
-        return false;
+        return Math.random() < chance;
     }
 
     public long getFiredCannonballs() {

@@ -23,8 +23,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
@@ -73,11 +71,8 @@ public class CannonsUtil
 		File file = new File(folderPath);
 		if (file.isDirectory())
 		{
-			if (file.list().length > 0)
-			{
-				//folder is not empty
-				return false;
-			}
+            //folder is not empty
+            return file.list().length == 0;
 		}
 		return true;
 	}
@@ -175,7 +170,7 @@ public class CannonsUtil
      */
     public static List<SpawnMaterialHolder> toSpawnMaterialHolderList(List<String> stringList)
     {
-        List<SpawnMaterialHolder> materialList = new ArrayList<SpawnMaterialHolder>();
+        List<SpawnMaterialHolder> materialList = new ArrayList<>();
         for (String str : stringList)
         {
             SpawnMaterialHolder material = new SpawnMaterialHolder(str);
@@ -192,7 +187,7 @@ public class CannonsUtil
      */
     public static List<SpawnEntityHolder> toSpawnEntityHolderList(List<String> stringList)
     {
-        List<SpawnEntityHolder> entityList = new ArrayList<SpawnEntityHolder>();
+        List<SpawnEntityHolder> entityList = new ArrayList<>();
 
         for (String str : stringList)
         {
@@ -214,7 +209,7 @@ public class CannonsUtil
 	 */
 	public static ArrayList<Block> SurroundingBlocks(Block block)
 	{
-		ArrayList<Block> Blocks = new ArrayList<Block>();
+		ArrayList<Block> Blocks = new ArrayList<>();
 
 		Blocks.add(block.getRelative(BlockFace.UP));
 		Blocks.add(block.getRelative(BlockFace.DOWN));
@@ -248,17 +243,16 @@ public class CannonsUtil
 	 * @return
 	 */
     public static int directionToYaw(BlockFace direction) {
-        switch (direction) {
-            case NORTH: return 180;
-            case EAST: return 270;
-            case SOUTH: return 0;
-            case WEST: return 90;
-            case NORTH_EAST: return 135;
-            case NORTH_WEST: return 45;
-            case SOUTH_EAST: return -135;
-            case SOUTH_WEST: return -45;
-            default: return 0;
-        }
+        return switch (direction) {
+            case NORTH -> 180;
+            case EAST -> 270;
+            case WEST -> 90;
+            case NORTH_EAST -> 135;
+            case NORTH_WEST -> 45;
+            case SOUTH_EAST -> -135;
+            case SOUTH_WEST -> -45;
+            default -> 0;
+        };
     }
 
     /**
@@ -494,21 +488,14 @@ public class CannonsUtil
     public static BlockFace randomBlockFaceNoDown()
     {
         Random r = new Random();
-        switch (r.nextInt(5))
-        {
-            case 0:
-                return BlockFace.UP;
-            case 1:
-                return BlockFace.EAST;
-            case 2:
-                return BlockFace.SOUTH;
-            case 3:
-                return BlockFace.WEST;
-            case 4:
-                return BlockFace.NORTH;
-            default:
-                return BlockFace.SELF;
-        }
+        return switch (r.nextInt(5)) {
+            case 0 -> BlockFace.UP;
+            case 1 -> BlockFace.EAST;
+            case 2 -> BlockFace.SOUTH;
+            case 3 -> BlockFace.WEST;
+            case 4 -> BlockFace.NORTH;
+            default -> BlockFace.SELF;
+        };
     }
 
     /**
@@ -592,13 +579,8 @@ public class CannonsUtil
 //        try
 //        {
             location.getWorld().playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING  , 0.25f, 0.75f);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Cannons.getPlugin(), new Runnable()
-            {
-                @Override public void run()
-                {
-                    location.getWorld().playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING , 0.25f, 0.1f);
-                }
-            }
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Cannons.getPlugin(),
+                    () -> location.getWorld().playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING , 0.25f, 0.1f)
                     , 3);
 //        }
 //        catch(Exception e)
@@ -810,9 +792,9 @@ public class CannonsUtil
      */
     public static HashMap<UUID, Entity> getNearbyEntities(Location l, int minRadius, int maxRadius){
         int chunkRadius = maxRadius < 16 ? 1 : (maxRadius - (maxRadius % 16))/16;
-        HashMap<UUID, Entity> radiusEntities = new HashMap<UUID, Entity>();
-        for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++){
-            for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++){
+        HashMap<UUID, Entity> radiusEntities = new HashMap<>();
+        for (int chX = -chunkRadius; chX <= chunkRadius; chX ++){
+            for (int chZ = -chunkRadius; chZ <= chunkRadius; chZ++){
                 int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
                 for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities()){
                     double dist = e.getLocation().distance(l);
@@ -833,16 +815,15 @@ public class CannonsUtil
      */
     public static HashMap<UUID, Target> getNearbyTargets(Location l, int minRadius, int maxRadius){
         int chunkTargets = maxRadius < 16 ? 1 : (maxRadius - (maxRadius % 16))/16;
-        HashMap<UUID, Target> radiusTargets = new HashMap<UUID, Target>();
-        for (int chX = 0 -chunkTargets; chX <= chunkTargets; chX ++){
-            for (int chZ = 0 -chunkTargets; chZ <= chunkTargets; chZ++){
+        HashMap<UUID, Target> radiusTargets = new HashMap<>();
+        for (int chX = -chunkTargets; chX <= chunkTargets; chX ++){
+            for (int chZ = -chunkTargets; chZ <= chunkTargets; chZ++){
                 int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
                 for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities()){
                     if (e.getWorld().equals(l.getWorld())) {
                         double dist = e.getLocation().distance(l);
                         if (e instanceof LivingEntity && !e.isDead() && minRadius <= dist && dist <= maxRadius && e.getLocation().getBlock() != l.getBlock()) {
-                            if ((e instanceof Player)){
-                                Player p = (Player) e;
+                            if ((e instanceof Player p)){
                                 if (p.getGameMode() == GameMode.CREATIVE || p.hasPermission("cannons.admin.notarget"))
                                     continue;
                             }
@@ -907,14 +888,11 @@ public class CannonsUtil
             return false;
         if (bPlayer.isOnline()){
             Player player = (Player) bPlayer;
-            if (player.isOnline())
-                return true;
+            return player.isOnline();
         }
         else{
-            if(bPlayer.hasPlayedBefore())
-                return true;
+            return bPlayer.hasPlayedBefore();
         }
-        return false;
     }
 
 
@@ -1040,8 +1018,8 @@ public class CannonsUtil
         Vector is = direction.clone().multiply(t).add(rv);
         //detect if is within bonds
         System.out.println("isurface: " + is);
-        if (is.getX() > -0.5 && is.getX() < 0.5 && is.getZ() > -0.5 && is.getZ() < 0.5){
-            return new Vector(0,1,0);
+        if (is.getX() > -0.5 && is.getX() < 0.5 && is.getZ() > -0.5) {
+            is.getZ();
         }
 
 

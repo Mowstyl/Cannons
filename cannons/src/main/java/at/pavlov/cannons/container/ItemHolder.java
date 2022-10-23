@@ -20,10 +20,12 @@ public class ItemHolder
 	private List<String> lore;
 	private boolean useTypeName;
 
-	private static Class localeClass = null;
-	private static Class craftItemStackClass = null, nmsItemStackClass = null, nmsItemClass = null;
-	private static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
-	private static String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
+	private static final Class localeClass = null;
+	private static final Class craftItemStackClass = null;
+    private static final Class nmsItemStackClass = null;
+    private static final Class nmsItemClass = null;
+	private static final String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
+	private static final String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
 
 	public ItemHolder(ItemStack item)
 	{
@@ -31,7 +33,7 @@ public class ItemHolder
         if (item == null){
             material=Material.AIR;
             displayName="";
-            lore = new ArrayList<String>();
+            lore = new ArrayList<>();
             return;
         }
 
@@ -51,7 +53,7 @@ public class ItemHolder
 			if (meta.hasLore() && meta.getLore()!=null)
 				lore = meta.getLore();
 			else
-				lore = new ArrayList<String>();
+				lore = new ArrayList<>();
 		}
 	}
 
@@ -81,7 +83,7 @@ public class ItemHolder
 		if (lore != null)
 			this.lore = lore;
 		else
-			this.lore = new ArrayList<String>();
+			this.lore = new ArrayList<>();
 	}
 
 	public ItemHolder(String str)
@@ -107,7 +109,7 @@ public class ItemHolder
 			else
 				displayName = "";
 
-			lore = new ArrayList<String>();
+			lore = new ArrayList<>();
 			while (s.hasNext()){
                 String nextStr = s.next();
                 if (!nextStr.equals(""))
@@ -200,7 +202,7 @@ public class ItemHolder
                 if (!item.hasLore())
                     return false;
 
-                Collection<String> similar = new HashSet<String>(this.lore);
+                Collection<String> similar = new HashSet<>(this.lore);
 
                 int size = similar.size();
                 similar.retainAll(item.getLore());
@@ -222,10 +224,7 @@ public class ItemHolder
 		//System.out.println("id:" + item.getId() + "-" + id + " data:" + item.getData() + "-" + data);
 		if (block != null)
 		{
-			if (block.getType().equals(this.material))
-			{
-				return true;
-			}
+            return block.getType().equals(this.material);
 		}	
 		return false;
 	}
@@ -266,8 +265,8 @@ public class ItemHolder
 				if (name.contains("_")) {
 					StringBuilder sbName = new StringBuilder();
 					for (String subName : name.split("_"))
-						sbName.append(subName.substring(0, 1).toUpperCase() + subName.substring(1).toLowerCase()).append(" ");
-					return sbName.toString().substring(0, sbName.length() - 1);
+						sbName.append(subName.substring(0, 1).toUpperCase()).append(subName.substring(1).toLowerCase()).append(" ");
+					return sbName.substring(0, sbName.length() - 1);
 				} else {
 					return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 				}

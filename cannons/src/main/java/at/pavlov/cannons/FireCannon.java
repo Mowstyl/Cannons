@@ -245,36 +245,19 @@ public class FireCannon {
         }
 
         final ProjectileCause projectileCause;
-        switch (action){
-            case fireRightClickTigger:{
+        switch (action) {
+            case fireRightClickTigger, fireAfterLoading, fireRedstoneTrigger, fireAutoaim -> {
                 projectileCause = ProjectileCause.PlayerFired;
-                break;
             }
-            case fireAutoaim:{
-                projectileCause = ProjectileCause.PlayerFired;
-                break;
-            }
-            case fireRedstoneTrigger:{
-                projectileCause = ProjectileCause.PlayerFired;
-                break;
-            }
-            case fireAfterLoading:{
-                projectileCause = ProjectileCause.PlayerFired;
-                break;
-            }
-            case fireRedstone:{
+            case fireRedstone -> {
                 projectileCause = ProjectileCause.RedstoneFired;
-                break;
             }
-            case fireSentry:{
+            case fireSentry -> {
                 projectileCause = ProjectileCause.SentryFired;
-                break;
             }
-            default:{
+            default -> {
                 projectileCause = ProjectileCause.UnknownFired;
-                break;
             }
-
         }
 
         //set up delayed task with automatic firing. Several bullets with time delay for one loaded projectile
@@ -283,7 +266,7 @@ public class FireCannon {
             //charge is only removed in the last round fired
             boolean lastRound = i==(projectile.getAutomaticFiringMagazineSize()-1);
             double randomess = 1. + design.getFuseBurnTimeRandomness() * new Random().nextDouble();
-            Long delayTime = (long) (randomess * design.getFuseBurnTime() * 20.0 + i*projectile.getAutomaticFiringDelay()*20.0);
+            long delayTime = (long) (randomess * design.getFuseBurnTime() * 20.0 + i*projectile.getAutomaticFiringDelay()*20.0);
             FireTaskWrapper fireTask = new FireTaskWrapper(cannon, playerUid, lastRound, projectileCause);
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask(fireTask)
             {
@@ -426,7 +409,7 @@ public class FireCannon {
             int maxSoundDist = config.getImitatedSoundMaximumDistance();
             CannonsUtil.imitateSound(loc, c.getCannonDesign().getSoundFiring(), maxSoundDist, maxVol);
 
-            List<Player> players = new ArrayList<Player>();
+            List<Player> players = new ArrayList<>();
             for (Player p : loc.getWorld().getPlayers()) {
                 Location pl = p.getLocation();
                 double distance = pl.distance(loc);
@@ -478,10 +461,9 @@ public class FireCannon {
             for (Entity next : living)
             {
                 boolean harmEntity = false;
-                if (next instanceof Player)
+                if (next instanceof Player player)
                 {
 
-                    Player player = (Player) next;
                     if ( player.isOnline() && !CheckHelmet(player) && player.getGameMode() != GameMode.CREATIVE  )
                     {
                         //if player has no helmet and is not in creative and there are confusion effects - harm him

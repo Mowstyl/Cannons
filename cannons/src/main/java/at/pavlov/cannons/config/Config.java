@@ -13,7 +13,6 @@ import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +80,10 @@ public class Config
 
 
     //superbreakerBlocks
-    private List<BlockData> superbreakerBlocks = new ArrayList<BlockData>();
+    private List<BlockData> superbreakerBlocks = new ArrayList<>();
 
     //unbreakableBlocks
-    private List<BlockData> unbreakableBlocks = new ArrayList<BlockData>();
+    private List<BlockData> unbreakableBlocks = new ArrayList<>();
 
     //cancelEventForLoadingItem
     private List<ItemHolder> cancelItems = new ArrayList<>();

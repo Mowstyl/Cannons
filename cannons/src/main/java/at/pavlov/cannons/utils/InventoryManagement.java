@@ -5,20 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import at.pavlov.cannons.projectile.Projectile;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-
-import at.pavlov.cannons.cannon.Cannon;
 
 
 public class InventoryManagement
@@ -119,10 +110,7 @@ public class InventoryManagement
             return true;
 
         // return false if something is missing
-        Iterator<Inventory> iter = invlist.iterator();
-        while (iter.hasNext())
-        {
-            Inventory next = iter.next();
+        for (final Inventory next : invlist) {
             // add items and returned hashmap is zero
             int size = next.addItem(item).size();
             if (size == 0)
@@ -141,11 +129,10 @@ public class InventoryManagement
     {
         if (list == null)
         {
-            list = new ArrayList<Inventory>();
+            list = new ArrayList<>();
         }
-        if(block.getState(false) instanceof InventoryHolder)
+        if(block.getState(false) instanceof InventoryHolder ih)
         {
-            InventoryHolder ih = (InventoryHolder) block.getState(false);
             list.add(ih.getInventory());
         }
         return list;

@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Aiming {
 
-    private class GunAngles
+    private static class GunAngles
 	{
 		private double horizontal;
 		private double vertical;
@@ -66,14 +66,14 @@ public class Aiming {
     private final Config config;
 
     //<Player,cannon name>
-    private ConcurrentHashMap<UUID, UUID> inAimingMode = new ConcurrentHashMap<UUID, UUID>();
+    private final ConcurrentHashMap<UUID, UUID> inAimingMode = new ConcurrentHashMap<>();
 	//<Cannon>
-	private HashSet<UUID> sentryCannons = new HashSet<UUID>();
+	private final HashSet<UUID> sentryCannons = new HashSet<>();
     //<Player>
-    private HashSet<UUID> imitatedEffectsOff = new HashSet<UUID>();
+    private final HashSet<UUID> imitatedEffectsOff = new HashSet<>();
 
     //<cannon uid, timespamp>
-    private HashMap<UUID, Long> lastAimed = new HashMap<UUID, Long>();
+    private final HashMap<UUID, Long> lastAimed = new HashMap<>();
 
 
     /**
@@ -92,29 +92,25 @@ public class Aiming {
     public void initAimingMode()
     {
         //changing angles for aiming mode
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-        {
-            public void run()
-            {
-                long startTime = System.nanoTime();
-                updateAimingMode();
-                double time = (System.nanoTime() - startTime)/1000000.0;
-                if (time > 10.)
-					plugin.logDebug("Time update aiming: " + new DecimalFormat("0.00").format(time)+ "ms");
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            long startTime = System.nanoTime();
+            updateAimingMode();
+            double time = (System.nanoTime() - startTime)/1000000.0;
+            if (time > 10.)
+                plugin.logDebug("Time update aiming: " + new DecimalFormat("0.00").format(time)+ "ms");
 
-				startTime = System.nanoTime();
-                updateImpactPredictor();
-				time = (System.nanoTime() - startTime)/1000000.0;
-				if (time > 10.)
-					plugin.logDebug("Time updateImpactPredictor: " + new DecimalFormat("0.00").format(time) + "ms");
+            startTime = System.nanoTime();
+            updateImpactPredictor();
+            time = (System.nanoTime() - startTime)/1000000.0;
+            if (time > 10.)
+                plugin.logDebug("Time updateImpactPredictor: " + new DecimalFormat("0.00").format(time) + "ms");
 
-				startTime = System.nanoTime();
-                updateSentryMode();
-				time = (System.nanoTime() - startTime)/1000000.0;
-				if (time > 10.)
-					plugin.logDebug("Time updateSentryMode: " + new DecimalFormat("0.00").format(time) + "ms");
+            startTime = System.nanoTime();
+            updateSentryMode();
+            time = (System.nanoTime() - startTime)/1000000.0;
+            if (time > 10.)
+                plugin.logDebug("Time updateSentryMode: " + new DecimalFormat("0.00").format(time) + "ms");
 
-            }
         }, 1L, 1L);
     }
 
@@ -584,7 +580,7 @@ public class Aiming {
 
                 // find a suitable target
                 if (!cannon.hasSentryEntity()){
-                    ArrayList<Target> possibleTargets = new ArrayList<Target>();
+                    ArrayList<Target> possibleTargets = new ArrayList<>();
                     for (Target t : targets.values()) {
                     	//Monster
                         if (t.getTargetType() == TargetType.MONSTER && cannon.isTargetMob()) {
@@ -835,9 +831,7 @@ public class Aiming {
 						cannon.setAimingPitch(cannon.getAimingPitch() + cannon.getCannonDesign().getSentrySpread() * rand.nextGaussian());
 						cannon.setAimingYaw(cannon.getAimingYaw() + cannon.getCannonDesign().getSentrySpread() * rand.nextGaussian());
 					}
-					if (cannon.canAimPitch(cannon.getAimingPitch()) && cannon.canAimYaw(cannon.getAimingYaw())) {
-						return true;
-					}
+                    return cannon.canAimPitch(cannon.getAimingPitch()) && cannon.canAimYaw(cannon.getAimingYaw());
 				}
 				// can't aim at this solution
 				return false;

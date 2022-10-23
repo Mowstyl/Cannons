@@ -167,9 +167,8 @@ public class PlayerListener implements Listener
 //        }
 
         // Place wallsign
-        if (event.getBlockPlaced().getBlockData() instanceof WallSign)
+        if (event.getBlockPlaced().getBlockData() instanceof WallSign wallSign)
         {
-            WallSign wallSign = (WallSign) event.getBlockPlaced().getBlockData();
             // check cannon
             Location loc = event.getBlock().getRelative(wallSign.getFacing().getOppositeFace()).getLocation();
             Cannon cannon = cannonManager.getCannon(loc, event.getPlayer().getUniqueId(), true);
@@ -605,8 +604,8 @@ public class PlayerListener implements Listener
                 if (!player.isSneaking() && design.isFireAfterLoading() && cannon.isLoaded() && cannon.isProjectilePushed())
                     fireCannon.playerFiring(cannon, player, InteractAction.fireAfterLoading);
 
-                if(message!=null)
-                    return;
+                if(message!=null) {
+                }
             }
         }
         //no cannon found - maybe the player has click into the air to stop aiming

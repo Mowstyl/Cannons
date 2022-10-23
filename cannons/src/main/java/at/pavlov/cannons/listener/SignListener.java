@@ -1,7 +1,6 @@
 package at.pavlov.cannons.listener;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -19,9 +18,9 @@ import at.pavlov.cannons.config.UserMessages;
 public class SignListener implements Listener
 {
 	@SuppressWarnings("unused")
-	private Config config;
+	private final Config config;
 	@SuppressWarnings("unused")
-	private UserMessages userMessages;
+	private final UserMessages userMessages;
 	private final Cannons plugin;
 	private final CannonManager cannonManager;
 
@@ -55,7 +54,7 @@ public class SignListener implements Listener
 	        Cannon cannon = cannonManager.getCannon(cannonBlock.getLocation(), event.getPlayer().getUniqueId());
 			
 	        //get cannon from the sign
-			Cannon cannonFromSign = cannonManager.getCannon(event.getLine(0));
+			Cannon cannonFromSign = CannonManager.getCannon(event.getLine(0));
 			
 			//if the sign is placed against a cannon - no problem
 			//if the sign has the name of other cannon - change it

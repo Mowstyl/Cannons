@@ -29,7 +29,6 @@ import at.pavlov.cannons.Enum.FakeBlockType;
 import at.pavlov.cannons.Enum.ProjectileCause;
 import at.pavlov.cannons.config.Config;
 import at.pavlov.cannons.container.DeathCause;
-import at.pavlov.cannons.container.ItemHolder;
 import at.pavlov.cannons.container.SoundHolder;
 import at.pavlov.cannons.container.SpawnEntityHolder;
 import at.pavlov.cannons.container.SpawnMaterialHolder;
@@ -267,9 +266,8 @@ public class CreateExplosion {
 
 	    // add some specific data values
 	    // TNT
-	    if (entity instanceof TNTPrimed) {
-			TNTPrimed tnt = (TNTPrimed) entity;
-			try {
+	    if (entity instanceof TNTPrimed tnt) {
+            try {
 				int fusetime = CannonsUtil.parseInt(entityHolder.getData().get(EntityDataType.FUSE_TIME),
 					tnt.getFuseTicks());
 				int fuseTicks = (int) (fusetime * (1 + r.nextGaussian() / 3.0));
@@ -281,9 +279,8 @@ public class CreateExplosion {
 			}
 	    }
 	    // AreaEffectCloud
-	    if (entity instanceof AreaEffectCloud) {
-			AreaEffectCloud cloud = (AreaEffectCloud) entity;
-			try {
+	    if (entity instanceof AreaEffectCloud cloud) {
+            try {
 				// PARTICLE ("Particle"),
 				// EFFECTS ("Effects"),
 				cloud.setReapplicationDelay(
@@ -321,9 +318,8 @@ public class CreateExplosion {
 			}
 		}
 		// SpectralArrow
-		if (entity instanceof SpectralArrow) {
-			SpectralArrow arrow = (SpectralArrow) entity;
-			try {
+		if (entity instanceof SpectralArrow arrow) {
+            try {
 				arrow.setGlowingTicks(CannonsUtil.parseInt(entityHolder.getData().get(EntityDataType.DURATION),
 					arrow.getGlowingTicks()));
 			} catch (Exception e) {
@@ -332,9 +328,8 @@ public class CreateExplosion {
 			}
 		}
 		// TippedArrow
-		if (entity instanceof Arrow) {
-			Arrow arrow = (Arrow) entity;
-			try {
+		if (entity instanceof Arrow arrow) {
+            try {
 				arrow.setBasePotionData(CannonsUtil.parsePotionData(
 					entityHolder.getData().get(EntityDataType.POTION_EFFECT), arrow.getBasePotionData()));
 			} catch (Exception e) {
@@ -343,9 +338,8 @@ public class CreateExplosion {
 			}
 		}
 		// LivingEntity
-		if (entity instanceof LivingEntity) {
-		LivingEntity living = (LivingEntity) entity;
-			try {
+		if (entity instanceof LivingEntity living) {
+            try {
 				EntityEquipment equipment = living.getEquipment();
 				if (equipment != null) {
 				equipment.setBoots((CannonsUtil.parseItemstack(
@@ -371,9 +365,8 @@ public class CreateExplosion {
 			}
 	    }
 	    // ThrownPotion
-	    if (entity instanceof SplashPotion) {
-			SplashPotion pentity = (SplashPotion) entity;
-			try {
+	    if (entity instanceof SplashPotion pentity) {
+            try {
 				ItemStack potion = new ItemStack(Material.SPLASH_POTION);
 				PotionMeta meta = (PotionMeta) potion.getItemMeta();
 				meta.setBasePotionData(CannonsUtil.parsePotionData(
@@ -386,9 +379,8 @@ public class CreateExplosion {
 			}
 	    }
 	    // LingeringPotion
-	    if (entity instanceof LingeringPotion) {
-			LingeringPotion pentity = (LingeringPotion) entity;
-			try {
+	    if (entity instanceof LingeringPotion pentity) {
+            try {
 				ItemStack potion = new ItemStack(Material.LINGERING_POTION);
 				PotionMeta meta = (PotionMeta) potion.getItemMeta();
 				meta.setBasePotionData(CannonsUtil.parsePotionData(
@@ -516,7 +508,7 @@ public class CreateExplosion {
 			entity.setVelocity(vect);
 			// set some other properties
 			entity.setDropItem(false);
-			this.plugin.logDebug("Spawned block: " + item.toString() + " at impact");
+			this.plugin.logDebug("Spawned block: " + item + " at impact");
 		} else {
 			this.plugin.logSevere(
 				"Item id:" + item.toString() + " can't be spawned as falling block.");
@@ -629,10 +621,9 @@ public class CreateExplosion {
     private void applyPotionEffect(Location impactLoc, Entity next, FlyingProjectile cannonball) {
 	Projectile projectile = cannonball.getProjectile();
 
-	if (next instanceof LivingEntity) {
-	    LivingEntity living = (LivingEntity) next;
+	if (next instanceof LivingEntity living) {
 
-	    double dist = impactLoc.distance(living.getEyeLocation());
+        double dist = impactLoc.distance(living.getEyeLocation());
 	    // if the entity is too far away, return
 	    if (dist > projectile.getPotionRange())
 		return;
@@ -673,10 +664,9 @@ public class CreateExplosion {
     private double getPlayerDamage(Location impactLoc, Entity next, FlyingProjectile cannonball) {
 	Projectile projectile = cannonball.getProjectile();
 
-	if (next instanceof LivingEntity) {
-	    LivingEntity living = (LivingEntity) next;
+	if (next instanceof LivingEntity living) {
 
-	    double dist = impactLoc.distance((living).getEyeLocation());
+        double dist = impactLoc.distance((living).getEyeLocation());
 	    // if the entity is too far away, return
 	    if (dist > projectile.getPlayerDamageRange())
 		return 0.0;
@@ -695,9 +685,8 @@ public class CreateExplosion {
 
 	    // calculate the armor reduction
 	    double reduction = 1.0;
-	    if (living instanceof HumanEntity) {
-		HumanEntity human = (HumanEntity) living;
-		double armorPiercing = Math.max(projectile.getPenetration(), 0);
+	    if (living instanceof HumanEntity human) {
+            double armorPiercing = Math.max(projectile.getPenetration(), 0);
 		reduction *= (1 - CannonsUtil.getArmorDamageReduced(human) / (armorPiercing + 1))
 			* (1 - CannonsUtil.getBlastProtection(human));
 	    }
@@ -726,10 +715,9 @@ public class CreateExplosion {
 	// if (cannonball.getProjectileEntity()==null)
 	// return 0.0;
 
-	if (target instanceof LivingEntity) {
-	    LivingEntity living = (LivingEntity) target;
+	if (target instanceof LivingEntity living) {
 
-	    // given damage is in half hearts
+        // given damage is in half hearts
 	    double damage = projectile.getDirectHitDamage();
 
 	    // randomizer
@@ -739,9 +727,8 @@ public class CreateExplosion {
 
 	    // calculate the armor reduction
 	    double reduction = 1.0;
-	    if (living instanceof HumanEntity) {
-		HumanEntity human = (HumanEntity) living;
-		double armorPiercing = Math.max(projectile.getPenetration(), 0);
+	    if (living instanceof HumanEntity human) {
+            double armorPiercing = Math.max(projectile.getPenetration(), 0);
 		reduction *= (1 - CannonsUtil.getArmorDamageReduced(human) / (armorPiercing + 1))
 			* (1 - CannonsUtil.getProjectileProtection(human) / (armorPiercing + 1));
 	    }
@@ -1053,9 +1040,8 @@ public class CreateExplosion {
 	    double damage = entry.getValue();
 	    Entity entity = entry.getKey();
 
-	    if (damage >= 1 && entity instanceof LivingEntity) {
-		LivingEntity living = (LivingEntity) entity;
-		this.plugin.logDebug(
+	    if (damage >= 1 && entity instanceof LivingEntity living) {
+            this.plugin.logDebug(
 			"apply damage to entity " + living.getType() + " by " + String.format("%.2f", damage));
 		double health = living.getHealth();
 		living.setNoDamageTicks(0);// It will do damage by each projectile without noDamageTime

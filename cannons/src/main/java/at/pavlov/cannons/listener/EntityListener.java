@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import at.pavlov.cannons.Enum.BreakCause;
-import at.pavlov.cannons.container.ItemHolder;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Projectile;
@@ -44,10 +43,9 @@ public class EntityListener implements Listener
 	public void onProjectileHitEntity(EntityDamageByEntityEvent event)
 	{
 		Entity er = event.getDamager();
-		if(event.getDamager() != null && er instanceof Projectile)
+		if(event.getDamager() != null && er instanceof Projectile p)
 		{
-			Projectile p = (Projectile) er;
-			plugin.getProjectileManager().directHitProjectile(p, event.getEntity());
+            plugin.getProjectileManager().directHitProjectile(p, event.getEntity());
 		}
 
 	}
@@ -94,7 +92,7 @@ public class EntityListener implements Listener
      * @param blocklist list of blocks involved in the event
      */
     public void ExplosionEventHandler(List<Block> blocklist){
-        HashSet<UUID> remove = new HashSet<UUID>();
+        HashSet<UUID> remove = new HashSet<>();
 
         // first search if a barrel block was destroyed.
         for (Block block : blocklist) {

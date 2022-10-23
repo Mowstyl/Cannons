@@ -11,15 +11,15 @@ class CannonBlocks
 {
 	private Vector rotationCenter;														//center off all rotation blocks
     private Vector muzzle;																//center off all muzzle blocks - spawing Vector for snowball
-    private ArrayList<SimpleBlock> allCannonBlocks = new ArrayList<SimpleBlock>();
-    private ArrayList<Vector> barrelBlocks = new ArrayList<Vector>();
-    private ArrayList<SimpleBlock> chestsAndSigns = new ArrayList<SimpleBlock>();
-    private ArrayList<Vector> redstoneTorches = new ArrayList<Vector>();
-    private ArrayList<SimpleBlock> redstoneWiresAndRepeater = new ArrayList<SimpleBlock>();
-    private ArrayList<Vector> redstoneTrigger = new ArrayList<Vector>();
-    private ArrayList<Vector> rightClickTrigger = new ArrayList<Vector>();
-    private ArrayList<Vector> firingIndicator = new ArrayList<Vector>();
-    private ArrayList<Vector> destructibleBlocks = new ArrayList<Vector>();
+    private ArrayList<SimpleBlock> allCannonBlocks = new ArrayList<>();
+    private ArrayList<Vector> barrelBlocks = new ArrayList<>();
+    private ArrayList<SimpleBlock> chestsAndSigns = new ArrayList<>();
+    private ArrayList<Vector> redstoneTorches = new ArrayList<>();
+    private ArrayList<SimpleBlock> redstoneWiresAndRepeater = new ArrayList<>();
+    private ArrayList<Vector> redstoneTrigger = new ArrayList<>();
+    private ArrayList<Vector> rightClickTrigger = new ArrayList<>();
+    private ArrayList<Vector> firingIndicator = new ArrayList<>();
+    private ArrayList<Vector> destructibleBlocks = new ArrayList<>();
     
 
     /**

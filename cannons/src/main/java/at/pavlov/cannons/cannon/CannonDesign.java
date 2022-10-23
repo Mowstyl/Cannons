@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import at.pavlov.cannons.container.SoundHolder;
-import at.pavlov.cannons.projectile.ProjectileStorage;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -188,7 +187,7 @@ public class CannonDesign
     private List<BlockData> schematicBlockTypeProtected;				//list of blocks that are protected from explosions (e.g. buttons)
     
     //cannon design block lists for every direction (NORTH, EAST, SOUTH, WEST)
-    private HashMap<BlockFace, CannonBlocks> cannonBlockMap = new HashMap<BlockFace, CannonBlocks>();
+    private HashMap<BlockFace, CannonBlocks> cannonBlockMap = new HashMap<>();
 
 
     
@@ -255,7 +254,7 @@ public class CannonDesign
     		return cannonBlocks.getAllCannonBlocks();
     	}
     	
-    	return new ArrayList<SimpleBlock>();
+    	return new ArrayList<>();
     }
 
 
@@ -267,7 +266,7 @@ public class CannonDesign
     public List<Location> getAllCannonBlocks(Cannon cannon)
     {
         CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-        List<Location> locList = new ArrayList<Location>();
+        List<Location> locList = new ArrayList<>();
         if (cannonBlocks != null)
         {
             for (SimpleBlock block : cannonBlocks.getAllCannonBlocks())
@@ -287,7 +286,7 @@ public class CannonDesign
     public List<Location> getDestructibleBlocks(Cannon cannon)
     {
      	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (Vector vect : cannonBlocks.getDestructibleBlocks())
@@ -307,7 +306,7 @@ public class CannonDesign
     public List<Location> getFiringIndicator(Cannon cannon)
     {
      	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (Vector vect : cannonBlocks.getFiringIndicator())
@@ -326,7 +325,7 @@ public class CannonDesign
     public List<Location> getLoadingInterface(Cannon cannon)
     {
         CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-        List<Location> locList = new ArrayList<Location>();
+        List<Location> locList = new ArrayList<>();
         if (cannonBlocks != null)
         {
             for (Vector vect : cannonBlocks.getBarrelBlocks())
@@ -345,7 +344,7 @@ public class CannonDesign
     public List<Location> getBarrelBlocks(Cannon cannon)
     {
         CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-        List<Location> locList = new ArrayList<Location>();
+        List<Location> locList = new ArrayList<>();
         if (cannonBlocks != null)
         {
             for (Vector vect : cannonBlocks.getBarrelBlocks())
@@ -364,7 +363,7 @@ public class CannonDesign
     public List<Location> getRightClickTrigger(Cannon cannon)
     {
      	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (Vector vect : cannonBlocks.getRightClickTrigger())
@@ -383,7 +382,7 @@ public class CannonDesign
     public List<Location> getRedstoneTrigger(Cannon cannon)
     {
      	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (Vector vect : cannonBlocks.getRedstoneTrigger())
@@ -403,7 +402,7 @@ public class CannonDesign
     public List<Location> getChestsAndSigns(Cannon cannon)
     {
     	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (SimpleBlock block : cannonBlocks.getChestsAndSigns())
@@ -422,7 +421,7 @@ public class CannonDesign
     public List<Location> getRedstoneTorches(Cannon cannon)
     {
     	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (Vector vect : cannonBlocks.getRedstoneTorches())
@@ -441,7 +440,7 @@ public class CannonDesign
     public List<Location> getRedstoneWireAndRepeater(Cannon cannon)
     {
     	CannonBlocks cannonBlocks  = cannonBlockMap.get(cannon.getCannonDirection());
-    	List<Location> locList = new ArrayList<Location>();
+    	List<Location> locList = new ArrayList<>();
     	if (cannonBlocks != null)
     	{
     		for (SimpleBlock block : cannonBlocks.getRedstoneWiresAndRepeater())
