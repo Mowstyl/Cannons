@@ -7,8 +7,7 @@ plugins {
 dependencies {
     implementation("org.bstats:bstats-bukkit:2.2.1")
     compileOnly("net.milkbowl.vault:VaultAPI:1.7")
-    implementation("io.papermc:paperlib:1.0.7")
-    compileOnly(libs.spigot)
+    compileOnly(libs.paper)
     compileOnly(libs.worldeditCore)
 }
 
@@ -29,7 +28,6 @@ tasks {
         }
         val base = "at.pavlov.cannons.libraries"
         relocate("org.bstats", "$base.bstats")
-        relocate("io.papermc.lib", "${base}.paperlib")
     }
 
     withType(Assemble::class) {
