@@ -11,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -39,12 +40,11 @@ public class FlyingProjectile
     private ProjectileCause projectileCause;
     private boolean hasDetonated;
     private MovingObject predictor;
-    private boolean hasDetonated = false;
 
 
 	public FlyingProjectile(Projectile projectile, org.bukkit.entity.Projectile projectile_entity, UUID shooterUID, org.bukkit.projectiles.ProjectileSource source, Location playerLoc, UUID cannonId, ProjectileCause projectileCause)
 	{
-        //Validate.notNull(shooterUID, "shooterUID for the projectile can't be null");
+        Objects.requireNonNull(shooterUID, "shooterUID for the projectile can't be null");
         this.entityUID = projectile_entity.getUniqueId();
         this.worldUID = projectile_entity.getWorld().getUID();
 

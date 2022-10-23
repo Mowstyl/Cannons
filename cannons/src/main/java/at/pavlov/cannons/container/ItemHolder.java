@@ -1,8 +1,6 @@
 package at.pavlov.cannons.container;
 
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
-import org.apache.commons.lang.StringUtils;
-import at.pavlov.cannons.Cannons;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -326,7 +324,7 @@ public class ItemHolder
 				return capitalizeFully(itemStack.getType().name().replace("_", " ").toLowerCase());
 			}
 			else {
-				return capitalizeFully(PlainComponentSerializer.plain().serialize(meta.displayName()).replace("_", " ").toLowerCase());
+				return capitalizeFully(PlainTextComponentSerializer.plainText().serialize(meta.displayName()).replace("_", " ").toLowerCase());
 			}
 		}
 		return capitalizeFully(itemStack.getType().name().replace("_", " ").toLowerCase());
