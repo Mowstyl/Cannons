@@ -19,5 +19,7 @@ jobs:
           java-version: '17'
           distribution: 'zulu'
           cache: 'gradle'
+      - name : Make gradlew executable
+        run : chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew clean build

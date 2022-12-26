@@ -1,19 +1,19 @@
 [versions]
 # Platforms
 minecraft = "1.19.3-R0.1-SNAPSHOT"
-findbugs = "3.0.2"
+spotbugs = "4.7.3"
 
 # Minecraft Plugins
-worldedit = "7.2.12"
-fawe = "2.4.7"
+worldedit = "7.2.13"
+fawe = "2.5.0"
 
 # Gradle plugins
-paperweight = "1.3.7"
+paperweight = "1.4.0"
 
 [libraries]
 # Platform
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "minecraft" }
-findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "findbugs" }
+spotbugs = { group = "com.github.spotbugs", name = "spotbugs-annotations", version.ref = "spotbugs" }
 
 # Minecraft Plugins
 worldeditBukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldedit" }
