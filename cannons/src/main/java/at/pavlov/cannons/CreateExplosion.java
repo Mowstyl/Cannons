@@ -821,13 +821,6 @@ public class CreateExplosion {
 	    return;
 	}
 
-	// deflect cannonball
-	if (this.deflectProjectile(cannonball)) {
-	    // cannonball was deflected - no explosion
-	    this.plugin.logDebug("Cannonball was deflected");
-	    return;
-	}
-
 	boolean incendiary = projectile.hasProperty(ProjectileProperties.INCENDIARY);
 	boolean blockDamage = projectile.getExplosionDamage();
 
@@ -1010,130 +1003,63 @@ public class CreateExplosion {
      *            the flying projectile
      */
     private void damageEntity(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity) {
-	Projectile projectile = cannonball.getProjectile();
-	Location impactLoc = cannonball.getImpactLocation();
+        Projectile projectile = cannonball.getProjectile();
+        Location impactLoc = cannonball.getImpactLocation();
 
-	// explosion effect
-	double effectRange = projectile.getPlayerDamageRange();
-	List<Entity> entities = projectile_entity.getNearbyEntities(effectRange, effectRange, effectRange);
+        // explosion effect
+        double effectRange = projectile.getPlayerDamageRange();
+        List<Entity> entities = projectile_entity.getNearbyEntities(effectRange, effectRange, effectRange);
 
-	// search all entities to damage
-	Iterator<Entity> it = entities.iterator();
-	while (it.hasNext()) {
-	    Entity next = it.next();
+        // search all entities to damage
+        Iterator<Entity> it = entities.iterator();
+        while (it.hasNext()) {
+            Entity next = it.next();
 
-	    if (next instanceof LivingEntity) {
-		// get previous damage
-		double damage = 0.0;
-		if (this.damageMap.containsKey(next)) {
-		    damage = this.damageMap.get(next);
-		}
+            if (next instanceof LivingEntity) {
+            // get previous damage
+            double damage = 0.0;
+            if (this.damageMap.containsKey(next)) {
+                damage = this.damageMap.get(next);
+            }
 
-		// add explosion damage
-		damage += this.getPlayerDamage(impactLoc, next, cannonball);
-		this.damageMap.put(next, damage);
-	    }
-	}
+            // add explosion damage
+            damage += this.getPlayerDamage(impactLoc, next, cannonball);
+            this.damageMap.put(next, damage);
+            }
+        }
 
-	// apply sum of all damages
-	for (Map.Entry<Entity, Double> entry : this.damageMap.entrySet()) {
-	    double damage = entry.getValue();
-	    Entity entity = entry.getKey();
+        // apply sum of all damages
+        for (Map.Entry<Entity, Double> entry : this.damageMap.entrySet()) {
+            double damage = entry.getValue();
+            Entity entity = entry.getKey();
 
-	    if (damage >= 1 && entity instanceof LivingEntity living) {
-            this.plugin.logDebug(
-			"apply damage to entity " + living.getType() + " by " + String.format("%.2f", damage));
-		double health = living.getHealth();
-		living.setNoDamageTicks(0);// It will do damage by each projectile without noDamageTime
-		living.damage(damage);
+            if (damage >= 1 && entity instanceof LivingEntity living) {
+                this.plugin.logDebug(
+                        "apply damage to entity " + living.getType() + " by " + String.format("%.2f", damage));
+                double health = living.getHealth();
+                living.setNoDamageTicks(0);// It will do damage by each projectile without noDamageTime
+                living.damage(damage, projectile_entity);
 
-		// if player wears armor reduce damage if the player has take damage
-		if (living instanceof HumanEntity && health > living.getHealth()) {
-		    CannonsUtil.reduceArmorDurability((HumanEntity) living);
-		}
-	    }
-	}
+                // if player wears armor reduce damage if the player has take damage
+                if (living instanceof HumanEntity && health > living.getHealth()) {
+                    CannonsUtil.reduceArmorDurability((HumanEntity) living);
+                }
+            }
+        }
 
-	// potion effects
-	effectRange = projectile.getPotionRange();
-	entities = projectile_entity.getNearbyEntities(effectRange, effectRange, effectRange);
+        // potion effects
+        effectRange = projectile.getPotionRange();
+        entities = projectile_entity.getNearbyEntities(effectRange, effectRange, effectRange);
 
-	// apply potion effect
-	it = entities.iterator();
-	while (it.hasNext()) {
-	    Entity next = it.next();
-	    this.applyPotionEffect(impactLoc, next, cannonball);
-	}
+        // apply potion effect
+        it = entities.iterator();
+        while (it.hasNext()) {
+            Entity next = it.next();
+            this.applyPotionEffect(impactLoc, next, cannonball);
+        }
 
-	// remove all entries in damageMap
-	this.damageMap.clear();
-    }
-
-    /**
-     * deflect cannonball on unbreakable surface
-     * 
-     * @param cannonball
-     *            the flying projectile
-     */
-    private boolean deflectProjectile(FlyingProjectile cannonball) {
-	// todo deflect projectiles
-	// if (!cannonball.getProjectile().isSpawnEnabled())
-	// return;
-
-	Random r = new Random();
-	Location impactLoc = cannonball.getImpactLocation();
-	Location impactBlock = cannonball.getImpactBlock();
-	if (impactBlock == null)
-	    return false;
-
-	Vector vectdeflect = cannonball.getVelocity().clone().multiply(.5);
-	// vectdeflect.add(new
-	// Vector(vectdeflect.length()*r.nextGaussian()*0.2,vectdeflect.length()*r.nextGaussian()*0.2,vectdeflect.length()*r.nextGaussian()*0.2));
-
-	this.plugin.logDebug("Deflection calculating");
-
-	// ignore too slow cannonballs
-	if (vectdeflect.length() < 0.3)
-	    return false;
-
-	// no deflection if the projectile pierces the block
-	if (cannonball.getProjectile().hasProperty(ProjectileProperties.SUPERBREAKER))
-	    return false;
-
-	if (impactBlock.getBlock().getType() != Material.OBSIDIAN
-		&& impactBlock.getBlock().getType() != Material.BEDROCK)
-	    return false;
-
-	this.plugin.logDebug("Deflection valid");
-	// spawn a new deflected cannnonball
-	this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask(cannonball) {
-	    @Override
-	    public void run(Object object) {
-		FlyingProjectile cannonball = (FlyingProjectile) object;
-
-		Projectile projectile = cannonball.getProjectile();
-
-		Random r = new Random();
-
-		Location impactBlock = cannonball.getImpactBlock();
-		Vector vnormal = CannonsUtil.detectImpactSurfaceNormal(cannonball.getImpactLocation().toVector(),
-			cannonball.getVelocity().clone());
-
-		Vector vectdeflect = cannonball.getVelocity().multiply(.5);
-		Location impactLoc = cannonball.getImpactLocation()
-			.subtract(cannonball.getVelocity().normalize().multiply(0.3));
-		// vectdeflect.add(new
-		// Vector(vectdeflect.length()*r.nextGaussian()*0.2,vectdeflect.length()*r.nextGaussian()*0.2,vectdeflect.length()*r.nextGaussian()*0.2));
-		vectdeflect.setY(-vectdeflect.getY());
-		CreateExplosion.this.plugin.logDebug("Deflect projectile: " + vectdeflect);
-
-		CreateExplosion.this.plugin.getProjectileManager().spawnProjectile(projectile,
-			cannonball.getShooterUID(), cannonball.getSource(), cannonball.getPlayerlocation(),
-			impactLoc.clone(), vectdeflect, cannonball.getCannonUID(), ProjectileCause.DeflectedProjectile);
-	    }
-	}, 1L);
-
-	return true;
+        // remove all entries in damageMap
+        this.damageMap.clear();
     }
 
     /**
