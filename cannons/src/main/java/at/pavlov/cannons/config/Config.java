@@ -17,124 +17,106 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * @author DerPavlov
- * 
  */
 
 
+public class Config {
 
-public class Config
-{
-	//general
-	private boolean debugMode;
+    private final UserMessages userMessage;
+    private final Cannons plugin;
+    private final DesignStorage designStorage;
+    private final ProjectileStorage projectileStorage;
+    private final CannonManager cannonManager;
+    private final ProjectileManager projectileManager;
+    //general
+    private boolean debugMode;
     private boolean relayExplosionEvent;
     private int claimEdgeLength;
-	
-	//build limits
-	private boolean buildLimitEnabled;
-	private int buildLimitA;
-	private int buildLimitB;
+    //build limits
+    private boolean buildLimitEnabled;
+    private int buildLimitA;
+    private int buildLimitB;
     //keepProjectileAlive
     private boolean keepAliveEnabled;
     private double keepAliveTeleportDistance;
-	//tools
-	private ItemHolder toolAdjust = new ItemHolder("minecraft:air");
-	private ItemHolder toolAutoaim = new ItemHolder("minecraft:clock");
-	private double toolAutoaimRange;
-	private ItemHolder toolFiring = new ItemHolder("minecraft:flint_and_steel");
+    //tools
+    private ItemHolder toolAdjust = new ItemHolder("minecraft:air");
+    private ItemHolder toolAutoaim = new ItemHolder("minecraft:clock");
+    private double toolAutoaimRange;
+    private ItemHolder toolFiring = new ItemHolder("minecraft:flint_and_steel");
     private ItemHolder toolRamrod = new ItemHolder("minecraft:stick");
-	private ItemHolder toolRotating = new ItemHolder("minecraft:rail");
+    private ItemHolder toolRotating = new ItemHolder("minecraft:rail");
     private ItemHolder toolThermometer = new ItemHolder("minecraft:gold_nugget");
-
     private int imitatedBlockMinimumDistance;
     private int imitatedBlockMaximumDistance;
     private int imitatedSoundMaximumDistance;
     private float imitatedSoundMaximumVolume;
-
     private boolean imitatedExplosionEnabled;
     private int imitatedExplosionSphereSize;
-    private BlockData imitatedExplosionMaterial= Bukkit.createBlockData("minecraft:glowstone");
+    private BlockData imitatedExplosionMaterial = Bukkit.createBlockData("minecraft:glowstone");
     private double imitatedExplosionTime;
-
     private boolean imitatedExplosionParticlesEnabled;
     private Particle imitatedExplosionParticlesType;
     private double imitatedExplosionParticlesDiameter;
     private int imitatedExplosionParticlesCount;
-
     private boolean imitatedAimingEnabled;
     private int imitatedAimingLineLength;
     private BlockData imitatedAimingMaterial = Bukkit.createBlockData("minecraft:glass");
     private double imitatedAimingTime;
-
     private boolean imitatedFiringEffectEnabled;
     private BlockData imitatedFireMaterial = Bukkit.createBlockData("minecraft:glowstone");
     private BlockData imitatedSmokeMaterial = Bukkit.createBlockData("minecraft:cobweb");
     private double imitatedFiringTime;
-
     private boolean imitatedPredictorEnabled;
     private int imitatedPredictorIterations;
     private double imitatedPredictorDistance;
     private BlockData imitatedPredictorMaterial = Bukkit.createBlockData("minecraft:glowstone");
     private double imitatedPredictorTime;
-
-
     //superbreakerBlocks
     private List<BlockData> superbreakerBlocks = new ArrayList<>();
-
     //unbreakableBlocks
     private List<BlockData> unbreakableBlocks = new ArrayList<>();
-
     //cancelEventForLoadingItem
     private List<ItemHolder> cancelItems = new ArrayList<>();
 
-
-    private final UserMessages userMessage;
-	private final Cannons plugin;
-	private final DesignStorage designStorage;
-	private final ProjectileStorage projectileStorage;
-    private final CannonManager cannonManager;
-    private final ProjectileManager projectileManager;
-
-	public Config(Cannons plugin)
-	{
-		this.plugin = plugin;
-		userMessage = new UserMessages(this.plugin);
-		designStorage = new DesignStorage(this.plugin);
-		projectileStorage = new ProjectileStorage(this.plugin);
+    public Config(Cannons plugin) {
+        this.plugin = plugin;
+        userMessage = new UserMessages(this.plugin);
+        designStorage = new DesignStorage(this.plugin);
+        projectileStorage = new ProjectileStorage(this.plugin);
         cannonManager = new CannonManager(plugin, userMessage, this);
         projectileManager = new ProjectileManager(plugin);
-	}
+    }
 
-	public void loadConfig()
-	{
-		// copy the default config to the disk if it does not exist
-		plugin.saveDefaultConfig();
+    public void loadConfig() {
+        // copy the default config to the disk if it does not exist
+        plugin.saveDefaultConfig();
 
         plugin.logDebug("load Config");
         plugin.reloadConfig();
-		
-		//general
-		setDebugMode(plugin.getConfig().getBoolean("general.debugMode", false));
+
+        //general
+        setDebugMode(plugin.getConfig().getBoolean("general.debugMode", false));
         setRelayExplosionEvent(plugin.getConfig().getBoolean("general.relayExplosionEvent", false));
         setClaimEdgeLength(plugin.getConfig().getInt("general.claimEdgeLength", 60));
-		
-		//limitOfCannons
-		setBuildLimitEnabled(plugin.getConfig().getBoolean("cannonLimits.useLimits", true));
-		setBuildLimitA(plugin.getConfig().getInt("cannonLimits.buildLimitA", 10));
-		setBuildLimitB(plugin.getConfig().getInt("cannonLimits.buildLimitB", 2));
+
+        //limitOfCannons
+        setBuildLimitEnabled(plugin.getConfig().getBoolean("cannonLimits.useLimits", true));
+        setBuildLimitA(plugin.getConfig().getInt("cannonLimits.buildLimitA", 10));
+        setBuildLimitB(plugin.getConfig().getInt("cannonLimits.buildLimitB", 2));
 
         //keepProjectileAlive
         setKeepAliveEnabled(plugin.getConfig().getBoolean("keepProjectileAlive.enabled", true));
         setKeepAliveTeleportDistance(plugin.getConfig().getDouble("keepProjectileAlive.teleportProjectile", 5.0));
 
-		//tools
-		setToolAdjust(new ItemHolder(plugin.getConfig().getString("tools.adjust", "minecraft:air")));
-		setToolAutoaim(new ItemHolder(plugin.getConfig().getString("tools.autoaim", "minecraft:clock")));
+        //tools
+        setToolAdjust(new ItemHolder(plugin.getConfig().getString("tools.adjust", "minecraft:air")));
+        setToolAutoaim(new ItemHolder(plugin.getConfig().getString("tools.autoaim", "minecraft:clock")));
         setToolAutoaimRange(plugin.getConfig().getDouble("tools.autoaimRange", 4.0));
-		setToolFiring(new ItemHolder(plugin.getConfig().getString("tools.firing", "minecraft:flint_and_steel")));
+        setToolFiring(new ItemHolder(plugin.getConfig().getString("tools.firing", "minecraft:flint_and_steel")));
         setToolRamrod(new ItemHolder(plugin.getConfig().getString("tools.ramrod", "minecraft:stick")));
-		setToolRotating(new ItemHolder(plugin.getConfig().getString("tools.adjust", "minecraft:rail")));
+        setToolRotating(new ItemHolder(plugin.getConfig().getString("tools.adjust", "minecraft:rail")));
         setToolThermometer(new ItemHolder(plugin.getConfig().getString("tools.thermometer", "minecraft:gold_nugget")));
 
         //imitated effects
@@ -146,16 +128,21 @@ public class Config
         //imitated explosions block
         setImitatedExplosionEnabled(plugin.getConfig().getBoolean("imitatedEffects.explosion.enabled", false));
         setImitatedExplosionSphereSize(plugin.getConfig().getInt("imitatedEffects.explosion.sphereSize", 2));
-        setImitatedExplosionMaterial(CannonsUtil.createBlockData(plugin.getConfig().getString("imitatedEffects.explosion.material", "minecraft:glowstone")));
+        setImitatedExplosionMaterial(CannonsUtil.createBlockData(plugin
+                .getConfig()
+                .getString("imitatedEffects.explosion.material", "minecraft:glowstone")));
         setImitatedExplosionTime(plugin.getConfig().getDouble("imitatedEffects.explosion.time", 1.0));
 
         //imitated explosions particles
         setImitatedExplosionParticlesEnabled(plugin.getConfig().getBoolean("imitatedEffects.explosionParticles.enabled", true));
         try {
-            setImitatedExplosionParticlesType(Particle.valueOf(plugin.getConfig().getString("imitatedEffects.explosionParticles.type", "EXPLOSION_LARGE")));
-        }
-        catch(Exception e){
-            plugin.logSevere("Type for Explosion particle  is not correct. Please check spelling of " + plugin.getConfig().getString("imitatedEffects.explosionParticles.type"));
+            setImitatedExplosionParticlesType(Particle.valueOf(plugin
+                    .getConfig()
+                    .getString("imitatedEffects.explosionParticles.type", "EXPLOSION_LARGE")));
+        } catch (Exception e) {
+            plugin.logSevere("Type for Explosion particle  is not correct. Please check spelling of " + plugin
+                    .getConfig()
+                    .getString("imitatedEffects.explosionParticles.type"));
             setImitatedExplosionParticlesType(Particle.EXPLOSION_LARGE);
         }
         setImitatedExplosionParticlesCount(plugin.getConfig().getInt("imitatedEffects.explosionParticles.count", 5));
@@ -164,147 +151,135 @@ public class Config
         //imitated aiming
         setImitatedAimingEnabled(plugin.getConfig().getBoolean("imitatedEffects.aiming.enabled", false));
         setImitatedAimingLineLength(plugin.getConfig().getInt("imitatedEffects.aiming.length", 5));
-        setImitatedAimingMaterial(CannonsUtil.createBlockData(plugin.getConfig().getString("imitatedEffects.aiming.block", "minecraft:glass")));
+        setImitatedAimingMaterial(CannonsUtil.createBlockData(plugin
+                .getConfig()
+                .getString("imitatedEffects.aiming.block", "minecraft:glass")));
         setImitatedAimingTime(plugin.getConfig().getDouble("imitatedEffects.aiming.time", 1.0));
 
         //imitated firing effects
         setImitatedFiringEffectEnabled(plugin.getConfig().getBoolean("imitatedEffects.firing.enabled", false));
-        setImitatedFireMaterial(CannonsUtil.createBlockData(plugin.getConfig().getString("imitatedEffects.firing.fireBlock", "minecraft:glowstone")));
-        setImitatedSmokeMaterial(CannonsUtil.createBlockData(plugin.getConfig().getString("imitatedEffects.firing.smokeBlock", "'minecraft:cobweb")));
+        setImitatedFireMaterial(CannonsUtil.createBlockData(plugin
+                .getConfig()
+                .getString("imitatedEffects.firing.fireBlock", "minecraft:glowstone")));
+        setImitatedSmokeMaterial(CannonsUtil.createBlockData(plugin
+                .getConfig()
+                .getString("imitatedEffects.firing.smokeBlock", "'minecraft:cobweb")));
         setImitatedFiringTime(plugin.getConfig().getDouble("imitatedEffects.firing.time", 1.0));
 
         //imitaded predictor
         setImitatedPredictorEnabled(plugin.getConfig().getBoolean("imitatedEffects.predictor.enabled", true));
         setImitatedPredictorIterations(plugin.getConfig().getInt("imitatedEffects.predictor.maxIterations", 500));
         setImitatedPredictorDistance(plugin.getConfig().getDouble("imitatedEffects.predictor.maxDistance", 400.0));
-        setImitatedPredictorMaterial(CannonsUtil.createBlockData(plugin.getConfig().getString("imitatedEffects.predictor.material", "minecraft:glowstone")));
+        setImitatedPredictorMaterial(CannonsUtil.createBlockData(plugin
+                .getConfig()
+                .getString("imitatedEffects.predictor.material", "minecraft:glowstone")));
         setImitatedPredictorTime(plugin.getConfig().getDouble("imitatedEffects.predictor.time", 1.0));
 
         //superbreakerBlocks
         setSuperbreakerBlocks(CannonsUtil.toBlockDataList(plugin.getConfig().getStringList("superbreakerBlocks")));
         //if this list is empty add some blocks
-        if (superbreakerBlocks.size() == 0)
-        {
+        if (superbreakerBlocks.size() == 0) {
             plugin.logInfo("superbreakerBlock list is empty");
         }
 
         //unbreakableBlocks
         setUnbreakableBlocks(CannonsUtil.toBlockDataList(plugin.getConfig().getStringList("unbreakableBlocks")));
-        if (unbreakableBlocks.size() == 0)
-        {
+        if (unbreakableBlocks.size() == 0) {
             plugin.logInfo("unbreakableBlocks list is empty");
         }
 
         //cancelEventForLoadingItem
         setCancelItems(CannonsUtil.toItemHolderList(plugin.getConfig().getStringList("cancelEventForLoadingItem")));
-	
-		//load other configs	
-		projectileStorage.loadProjectiles();
-		designStorage.loadCannonDesigns();
+
+        //load other configs
+        projectileStorage.loadProjectiles();
+        designStorage.loadCannonDesigns();
         cannonManager.updateCannons();
-		userMessage.loadLanguage();
+        userMessage.loadLanguage();
 
-	}
-	
+    }
 
-	/**
-	 * returns the class UserMessages
-	 * @return
-	 */
-	public UserMessages getUserMessages()
-	{
-		return userMessage;
-	}
 
-	public DesignStorage getDesignStorage()
-	{
-		return designStorage;
-	}
+    /**
+     * returns the class UserMessages
+     *
+     * @return
+     */
+    public UserMessages getUserMessages() {
+        return userMessage;
+    }
 
-	public ProjectileStorage getProjectileStorage()
-	{
-		return projectileStorage;
-	}
+    public DesignStorage getDesignStorage() {
+        return designStorage;
+    }
 
-	public boolean isBuildLimitEnabled()
-	{
-		return buildLimitEnabled;
-	}
+    public ProjectileStorage getProjectileStorage() {
+        return projectileStorage;
+    }
 
-	void setBuildLimitEnabled(boolean buildLimitEnabled)
-	{
-		this.buildLimitEnabled = buildLimitEnabled;
-	}
+    public boolean isBuildLimitEnabled() {
+        return buildLimitEnabled;
+    }
 
-	public int getBuildLimitA()
-	{
-		return buildLimitA;
-	}
+    void setBuildLimitEnabled(boolean buildLimitEnabled) {
+        this.buildLimitEnabled = buildLimitEnabled;
+    }
 
-	void setBuildLimitA(int buildLimitA)
-	{
-		this.buildLimitA = buildLimitA;
-	}
+    public int getBuildLimitA() {
+        return buildLimitA;
+    }
 
-	public int getBuildLimitB()
-	{
-		return buildLimitB;
-	}
+    void setBuildLimitA(int buildLimitA) {
+        this.buildLimitA = buildLimitA;
+    }
 
-	void setBuildLimitB(int buildLimitB)
-	{
-		this.buildLimitB = buildLimitB;
-	}
+    public int getBuildLimitB() {
+        return buildLimitB;
+    }
 
-	public ItemHolder getToolAdjust()
-	{
-		return toolAdjust;
-	}
+    void setBuildLimitB(int buildLimitB) {
+        this.buildLimitB = buildLimitB;
+    }
 
-	void setToolAdjust(ItemHolder toolAdjust)
-	{
-		this.toolAdjust = toolAdjust;
-	}
+    public ItemHolder getToolAdjust() {
+        return toolAdjust;
+    }
 
-	public ItemHolder getToolAutoaim()
-	{
-		return toolAutoaim;
-	}
+    void setToolAdjust(ItemHolder toolAdjust) {
+        this.toolAdjust = toolAdjust;
+    }
 
-	void setToolAutoaim(ItemHolder toolAutoaim)
-	{
-		this.toolAutoaim = toolAutoaim;
-	}
+    public ItemHolder getToolAutoaim() {
+        return toolAutoaim;
+    }
 
-	public ItemHolder getToolRotating()
-	{
-		return toolRotating;
-	}
+    void setToolAutoaim(ItemHolder toolAutoaim) {
+        this.toolAutoaim = toolAutoaim;
+    }
 
-	void setToolRotating(ItemHolder toolRotating)
-	{
-		this.toolRotating = toolRotating;
-	}
+    public ItemHolder getToolRotating() {
+        return toolRotating;
+    }
 
-	public boolean isDebugMode()
-	{
-		return debugMode;
-	}
+    void setToolRotating(ItemHolder toolRotating) {
+        this.toolRotating = toolRotating;
+    }
 
-	void setDebugMode(boolean debugMode)
-	{
-		this.debugMode = debugMode;
-	}
+    public boolean isDebugMode() {
+        return debugMode;
+    }
 
-	public ItemHolder getToolFiring()
-	{
-		return toolFiring;
-	}
+    void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
 
-	void setToolFiring(ItemHolder toolFiring)
-	{
-		this.toolFiring = toolFiring;
-	}
+    public ItemHolder getToolFiring() {
+        return toolFiring;
+    }
+
+    void setToolFiring(ItemHolder toolFiring) {
+        this.toolFiring = toolFiring;
+    }
 
 
     public List<BlockData> getSuperbreakerBlocks() {
@@ -355,12 +330,11 @@ public class Config
         this.cancelItems = cancelItems;
     }
 
-    public boolean isCancelItem(ItemStack item)
-    {
-        for (ItemHolder item2 : getCancelItems())
-        {
-            if (item2.equalsFuzzy(item))
+    public boolean isCancelItem(ItemStack item) {
+        for (ItemHolder item2 : getCancelItems()) {
+            if (item2.equalsFuzzy(item)) {
                 return true;
+            }
         }
         return false;
     }
@@ -604,4 +578,5 @@ public class Config
     public void setImitatedExplosionParticlesType(Particle imitatedExplosionParticlesType) {
         this.imitatedExplosionParticlesType = imitatedExplosionParticlesType;
     }
+
 }

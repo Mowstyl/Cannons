@@ -18,8 +18,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class LoadCannonTask extends BukkitRunnable{
-    public LoadCannonTask(){
+public class LoadCannonTask extends BukkitRunnable {
+
+    public LoadCannonTask() {
 
     }
 
@@ -64,14 +65,16 @@ public class LoadCannonTask extends BukkitRunnable{
                     UUID owner = UUID.fromString(owner_str);
                     boolean isBanned = false;
                     for (OfflinePlayer oplayer : Bukkit.getServer().getBannedPlayers()) {
-                        if (oplayer.getUniqueId().equals(owner))
+                        if (oplayer.getUniqueId().equals(owner)) {
                             isBanned = true;
+                        }
                     }
                     if (!Bukkit.getOfflinePlayer(owner).hasPlayedBefore() || isBanned) {
-                        if (isBanned)
+                        if (isBanned) {
                             Cannons.getPlugin().logDebug("Owner of cannon " + cannon_id + " was banned");
-                        else
+                        } else {
                             Cannons.getPlugin().logDebug("Owner of cannon " + cannon_id + " does not exist");
+                        }
                         invalid.add(cannon_id);
                         continue;
                     }
@@ -130,7 +133,11 @@ public class LoadCannonTask extends BukkitRunnable{
         try (Statement statement = Cannons.getPlugin().getConnection().createStatement()) {
 
             for (UUID inv : invalid) {
-                statement.addBatch(String.format("DELETE FROM %s WHERE id='%s'", Cannons.getPlugin().getCannonDatabase(), inv.toString()));
+                statement.addBatch(String.format(
+                        "DELETE FROM %s WHERE id='%s'",
+                        Cannons.getPlugin().getCannonDatabase(),
+                        inv.toString()
+                ));
                 Cannons.getPlugin().logDebug("Delete cannon " + inv);
             }
             statement.executeBatch();
@@ -141,4 +148,5 @@ public class LoadCannonTask extends BukkitRunnable{
         Cannons.getPlugin().logDebug(i + " cannons loaded from the database");
 
     }
+
 }

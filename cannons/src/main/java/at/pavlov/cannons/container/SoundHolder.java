@@ -6,17 +6,16 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class SoundHolder {
+
     private Sound soundenum;
     private String soundstr;
     private Float volume;
     private Float pitch;
 
-    public SoundHolder(String str)
-    {
+    public SoundHolder(String str) {
         // data structure:
         // 'IRON_GOLEM_WALK:1:0.5'
-        try
-        {
+        try {
             soundenum = null;
             soundstr = null;
             volume = 1.0F;
@@ -26,32 +25,31 @@ public class SoundHolder {
             // use US locale to be able to identify floats in the string
             s.useLocale(Locale.US);
 
-            if (s.hasNext())
-            {
+            if (s.hasNext()) {
                 String scan = s.next();
-                if (scan!=null && !scan.equalsIgnoreCase("none"))
+                if (scan != null && !scan.equalsIgnoreCase("none")) {
                     try {
                         soundenum = Sound.valueOf(scan);
-                    }
-                    catch(Exception e){
+                    } catch (Exception e) {
                         soundstr = scan;
                     }
-            }
-            else
+                }
+            } else {
                 System.out.println("missing sound value in: " + str);
+            }
 
-            if (s.hasNextFloat())
+            if (s.hasNextFloat()) {
                 volume = s.nextFloat();
-            else
+            } else {
                 System.out.println("missing volume value in: " + str);
-            if (s.hasNextFloat())
+            }
+            if (s.hasNextFloat()) {
                 pitch = s.nextFloat();
-            else
+            } else {
                 System.out.println("missing pitch value in: " + str);
+            }
             s.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Error while converting " + str + ". Formatting: 'IRON_GOLEM_WALK:1:0.5'" + e);
         }
     }
@@ -72,16 +70,8 @@ public class SoundHolder {
         return soundenum;
     }
 
-    public void setSoundEnum(Sound sound) {
-        this.soundenum = sound;
-    }
-
     public String getSoundString() {
         return soundstr;
-    }
-
-    public void setSoundString(String sound) {
-        this.soundstr = sound;
     }
 
     public Float getVolume() {
@@ -100,24 +90,34 @@ public class SoundHolder {
         this.pitch = pitch;
     }
 
-    public boolean isValid(){
-        return this.soundenum!=null || this.soundstr!=null;
+    public boolean isValid() {
+        return this.soundenum != null || this.soundstr != null;
     }
 
-    public boolean isSoundString(){
-        return this.soundstr!=null;
+    public boolean isSoundString() {
+        return this.soundstr != null;
     }
 
-    public boolean isSoundEnum(){
-        return this.soundenum!=null;
+    public void setSoundString(String sound) {
+        this.soundstr = sound;
     }
 
-    public String toString(){
-        if (this.soundenum!=null)
+    public boolean isSoundEnum() {
+        return this.soundenum != null;
+    }
+
+    public void setSoundEnum(Sound sound) {
+        this.soundenum = sound;
+    }
+
+    public String toString() {
+        if (this.soundenum != null) {
             return this.soundenum + ":" + volume + ":" + pitch;
-        else if (this.soundstr!=null)
+        } else if (this.soundstr != null) {
             return this.soundstr + ":" + volume + ":" + pitch;
-        else
+        } else {
             return "Sound not found";
+        }
     }
+
 }

@@ -10,304 +10,291 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.material.Directional;
 import org.bukkit.util.Vector;
 
-public class SimpleBlock
-{
-	private int locX;
-	private int locY;
-	private int locZ;
-	
-	private BlockData blockData;
+public class SimpleBlock {
 
-	public SimpleBlock(int x, int y, int z, BlockData blockData)
-	{
-		locX = x;
-		locY = y;
-		locZ = z;
+    private int locX;
+    private int locY;
+    private int locZ;
 
-		this.blockData = blockData;
-	}
+    private BlockData blockData;
 
-	public SimpleBlock(Vector vect, BlockData blockData)
-	{
-		this(vect.getBlockX(), vect.getBlockY(), vect.getBlockZ(), blockData);
-	}
+    public SimpleBlock(int x, int y, int z, BlockData blockData) {
+        locX = x;
+        locY = y;
+        locZ = z;
 
-	public SimpleBlock(int x, int y, int z, Material material)
-	{
-		this(x, y, z, material.createBlockData());
-	}
-	
-	private SimpleBlock(Vector vect, Material material)
-	{
-		this(vect, material.createBlockData());
-	}
-	
-	public SimpleBlock(Location loc, Material material)
-	{
-		locX = loc.getBlockX();
-		locY = loc.getBlockY();
-		locZ = loc.getBlockZ();
-		
-		this.blockData = material.createBlockData();
-	}
+        this.blockData = blockData;
+    }
 
-	
-	/**
-	 * to location with offset
-	 * @param world bukkit world
-	 * @return location of the block
-	 */
-	public Location toLocation(World world, Vector offset)
-	{
-		return new Location(world, locX + offset.getBlockX(), locY + offset.getBlockY(), locZ + offset.getBlockZ());
-	}
+    public SimpleBlock(Vector vect, BlockData blockData) {
+        this(vect.getBlockX(), vect.getBlockY(), vect.getBlockZ(), blockData);
+    }
+
+    public SimpleBlock(int x, int y, int z, Material material) {
+        this(x, y, z, material.createBlockData());
+    }
+
+    private SimpleBlock(Vector vect, Material material) {
+        this(vect, material.createBlockData());
+    }
+
+    public SimpleBlock(Location loc, Material material) {
+        locX = loc.getBlockX();
+        locY = loc.getBlockY();
+        locZ = loc.getBlockZ();
+
+        this.blockData = material.createBlockData();
+    }
 
 
-	/**
-	 * compare the location of the block and the id and data or data = -1
-	 * @param block block to compare to
-	 * @param offset the offset of the cannon
-	 * @return true if both block match
-	 */
-	public boolean compareMaterialAndLoc(Block block, Vector offset)
-	{		
-		if (toVector().add(offset).equals(block.getLocation().toVector()))
-		{
+    /**
+     * to location with offset
+     *
+     * @param world bukkit world
+     * @return location of the block
+     */
+    public Location toLocation(World world, Vector offset) {
+        return new Location(world, locX + offset.getBlockX(), locY + offset.getBlockY(), locZ + offset.getBlockZ());
+    }
+
+
+    /**
+     * compare the location of the block and the id and data or data = -1
+     *
+     * @param block  block to compare to
+     * @param offset the offset of the cannon
+     * @return true if both block match
+     */
+    public boolean compareMaterialAndLoc(Block block, Vector offset) {
+        if (toVector().add(offset).equals(block.getLocation().toVector())) {
             return compareMaterial(block);
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 
-	/**
-	 * return true if Materials match
-	 * @param block block to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareMaterial(BlockData block)
-	{
-		return block.getMaterial().equals(this.blockData.getMaterial());
-	}
+    /**
+     * return true if Materials match
+     *
+     * @param block block to compare to
+     * @return true if both block match
+     */
+    public boolean compareMaterial(BlockData block) {
+        return block.getMaterial().equals(this.blockData.getMaterial());
+    }
 
-	/**
-	 * return true if Materials match
-	 * @param block block to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareMaterial(Block block)
-	{
-		return block.getType().equals(this.blockData.getMaterial());
-	}
+    /**
+     * return true if Materials match
+     *
+     * @param block block to compare to
+     * @return true if both block match
+     */
+    public boolean compareMaterial(Block block) {
+        return block.getType().equals(this.blockData.getMaterial());
+    }
 
-	/**
-	 * return true if Materials match
-	 * @param material material to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareMaterial(Material material)
-	{
-		return material.equals(this.blockData.getMaterial());
-	}
+    /**
+     * return true if Materials match
+     *
+     * @param material material to compare to
+     * @return true if both block match
+     */
+    public boolean compareMaterial(Material material) {
+        return material.equals(this.blockData.getMaterial());
+    }
 
-	/**
-	 * compares material and facing
-	 * @param blockData block to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareMaterialAndFacing(BlockData blockData) {
-		// different materials
-		if (!compareMaterial(blockData)) {
-			return false;
-		}
-		// compare facing and face
-		if (blockData instanceof Directional && this instanceof Directional){
-			return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
-		}
-		return true;
-	}
+    /**
+     * compares material and facing
+     *
+     * @param blockData block to compare to
+     * @return true if both block match
+     */
+    public boolean compareMaterialAndFacing(BlockData blockData) {
+        // different materials
+        if (!compareMaterial(blockData)) {
+            return false;
+        }
+        // compare facing and face
+        if (blockData instanceof Directional && this instanceof Directional) {
+            return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
+        }
+        return true;
+    }
 
-	/**
-	 * compares material and facing
-	 * @param block block to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareMaterialAndFacing(Block block) {
-		// different materials
-		if (!compareMaterial(block)) {
-			return false;
-		}
-		BlockData blockData = block.getBlockData();
-		// compare facing and face
-		if (blockData instanceof Directional && this instanceof Directional){
-			return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
-		}
-		return true;
-	}
+    /**
+     * compares material and facing
+     *
+     * @param block block to compare to
+     * @return true if both block match
+     */
+    public boolean compareMaterialAndFacing(Block block) {
+        // different materials
+        if (!compareMaterial(block)) {
+            return false;
+        }
+        BlockData blockData = block.getBlockData();
+        // compare facing and face
+        if (blockData instanceof Directional && this instanceof Directional) {
+            return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
+        }
+        return true;
+    }
 
-	/**
-	 * compares material and facing
-	 * @param block block to compare to
-	 * @param material the material of the block
-	 * @return true if both block match
-	 */
-	public boolean compareMaterialAndFacing(Block block, Material material) {
-		// different materials
-		if (!compareMaterial(material)) {
-			return false;
-		}
-		BlockData blockData = block.getBlockData();
-		// compare facing and face
-		if (blockData instanceof Directional && this instanceof Directional){
-			return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
-		}
-		return true;
-	}
+    /**
+     * compares material and facing
+     *
+     * @param block    block to compare to
+     * @param material the material of the block
+     * @return true if both block match
+     */
+    public boolean compareMaterialAndFacing(Block block, Material material) {
+        // different materials
+        if (!compareMaterial(material)) {
+            return false;
+        }
+        BlockData blockData = block.getBlockData();
+        // compare facing and face
+        if (blockData instanceof Directional && this instanceof Directional) {
+            return ((Directional) this).getFacing().equals(((Directional) blockData).getFacing());
+        }
+        return true;
+    }
 
-	/**
-	 * compares the real world block by material and facing
-	 * @param world the world of the block
-	 * @param offset the locations in x,y,z
-	 * @return true if both block are equal in data and facing
-	 */
-	public boolean compareMaterialAndFacing(World world, Vector offset)
-	{
-		Block block = toLocation(world, offset).getBlock();
-		return compareMaterialAndFacing(block.getBlockData());
-	}
+    /**
+     * compares the real world block by material and facing
+     *
+     * @param world  the world of the block
+     * @param offset the locations in x,y,z
+     * @return true if both block are equal in data and facing
+     */
+    public boolean compareMaterialAndFacing(World world, Vector offset) {
+        Block block = toLocation(world, offset).getBlock();
+        return compareMaterialAndFacing(block.getBlockData());
+    }
 
-	/**
-	 * matches all entries in this SimpleBlock to the given block
-	 * @param blockData block to compare to
-	 * @return true if both block match
-	 */
-	public boolean compareBlockData(BlockData blockData)
-	{
-		return this.blockData.matches(blockData);
-	}
-
-	/** 
-	 * shifts the location of the block without comparing the id
-	 * @param loc location to add
-	 * @return new Simpleblock
-	 */
-	public SimpleBlock add(Location loc)
-	{
-		return new SimpleBlock(locX + loc.getBlockX(), locY + loc.getBlockY(), locZ + loc.getBlockZ(), this.blockData);
-	}
-	
-	/**
-	 * shifts the location of the block without comparing the id
-	 * @param vect offset vector
-	 * @return a new block with a shifted location
-	 */
-	public SimpleBlock add(Vector vect)
-	{
-		return new SimpleBlock(toVector().add(vect), this.blockData);
-	}
-	
-	/** 
-	 * shifts the location of the block without comparing the id
-	 * @param vect vector to subtract
-	 * @return new block with new subtracted location
-	 */
-	public SimpleBlock subtract(Vector vect)
-	{
-		return new SimpleBlock(vect.getBlockX() - locX, vect.getBlockY() - locY, vect.getBlockZ() - locZ, this.blockData);
-	}
+    /**
+     * matches all entries in this SimpleBlock to the given block
+     *
+     * @param blockData block to compare to
+     * @return true if both block match
+     */
+    public boolean compareBlockData(BlockData blockData) {
+        return this.blockData.matches(blockData);
+    }
 
     /**
      * shifts the location of the block without comparing the id
+     *
+     * @param loc location to add
+     * @return new Simpleblock
+     */
+    public SimpleBlock add(Location loc) {
+        return new SimpleBlock(locX + loc.getBlockX(), locY + loc.getBlockY(), locZ + loc.getBlockZ(), this.blockData);
+    }
+
+    /**
+     * shifts the location of the block without comparing the id
+     *
+     * @param vect offset vector
+     * @return a new block with a shifted location
+     */
+    public SimpleBlock add(Vector vect) {
+        return new SimpleBlock(toVector().add(vect), this.blockData);
+    }
+
+    /**
+     * shifts the location of the block without comparing the id
+     *
+     * @param vect vector to subtract
+     * @return new block with new subtracted location
+     */
+    public SimpleBlock subtract(Vector vect) {
+        return new SimpleBlock(vect.getBlockX() - locX, vect.getBlockY() - locY, vect.getBlockZ() - locZ, this.blockData);
+    }
+
+    /**
+     * shifts the location of the block without comparing the id
+     *
      * @param vect vector to subtract
      */
-    public void subtract_noCopy(Vector vect)
-    {
+    public void subtract_noCopy(Vector vect) {
         locX -= vect.getBlockX();
         locY -= vect.getBlockY();
         locZ -= vect.getBlockZ();
     }
-	
-	/** 
-	 * shifts the location of the block without comparing the id
-	 * @param loc
-	 */
-	public SimpleBlock subtractInverted(Location loc)
-	{
-		return new SimpleBlock(loc.getBlockX() - locX, loc.getBlockY() - locY, loc.getBlockZ() - locZ, this.blockData);
-	}
-	
 
-	
-	/** 
-	 * shifts the location of the block without comparing the id
-	 * @param loc
-	 */
-	public SimpleBlock subtract(Location loc)
-	{
-		return new SimpleBlock(locX - loc.getBlockX() , locY - loc.getBlockY(), locZ - loc.getBlockZ(), this.blockData);
-	}
+    /**
+     * shifts the location of the block without comparing the id
+     *
+     * @param loc
+     */
+    public SimpleBlock subtractInverted(Location loc) {
+        return new SimpleBlock(loc.getBlockX() - locX, loc.getBlockY() - locY, loc.getBlockZ() - locZ, this.blockData);
+    }
 
-	/**
-	 * rotate the block 90° degree clockwise)
-	 * @return
-	 */
-	public void rotate90(){
-		this.blockData = CannonsUtil.roateBlockFacingClockwise(this.blockData);
-		int newx = -this.locZ;
-		this.locZ = this.locX;
-		this.locX = newx;
-	}
-	
-	/**
-	 * SimpleBlock to Vector
-	 */
-	public Vector toVector()
-	{
-		return new Vector(locX, locY, locZ);
-	}
 
-	public int getLocX()
-	{
-		return locX;
-	}
+    /**
+     * shifts the location of the block without comparing the id
+     *
+     * @param loc
+     */
+    public SimpleBlock subtract(Location loc) {
+        return new SimpleBlock(locX - loc.getBlockX(), locY - loc.getBlockY(), locZ - loc.getBlockZ(), this.blockData);
+    }
 
-	public void setLocX(int locX)
-	{
-		this.locX = locX;
-	}
+    /**
+     * rotate the block 90° degree clockwise)
+     *
+     * @return
+     */
+    public void rotate90() {
+        this.blockData = CannonsUtil.roateBlockFacingClockwise(this.blockData);
+        int newx = -this.locZ;
+        this.locZ = this.locX;
+        this.locX = newx;
+    }
 
-	public int getLocY()
-	{
-		return locY;
-	}
+    /**
+     * SimpleBlock to Vector
+     */
+    public Vector toVector() {
+        return new Vector(locX, locY, locZ);
+    }
 
-	public void setLocY(int locY)
-	{
-		this.locY = locY;
-	}
+    public int getLocX() {
+        return locX;
+    }
 
-	public int getLocZ()
-	{
-		return locZ;
-	}
+    public void setLocX(int locX) {
+        this.locX = locX;
+    }
 
-	public void setLocZ(int locZ)
-	{
-		this.locZ = locZ;
-	}
+    public int getLocY() {
+        return locY;
+    }
 
-	public void setBlockData(BlockData blockData)
-	{
-		this.blockData = blockData;
-	}
+    public void setLocY(int locY) {
+        this.locY = locY;
+    }
 
-	public BlockData getBlockData()
-	{
-		return this.blockData;
-	}
+    public int getLocZ() {
+        return locZ;
+    }
 
-	public String toString()
-	{
-		return "x:" + locX + " y:" + locY + " z:" + locZ +" blockdata:" + this.getBlockData().toString();
-	}
+    public void setLocZ(int locZ) {
+        this.locZ = locZ;
+    }
+
+    public BlockData getBlockData() {
+        return this.blockData;
+    }
+
+    public void setBlockData(BlockData blockData) {
+        this.blockData = blockData;
+    }
+
+    public String toString() {
+        return "x:" + locX + " y:" + locY + " z:" + locZ + " blockdata:" + this.getBlockData().toString();
+    }
 
 
 }

@@ -6,36 +6,46 @@ import at.pavlov.cannons.utils.DelayedTask;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ProjectileManager
-{
+public class ProjectileManager {
 
     private final Cannons plugin;
     private final ConcurrentHashMap<UUID, FlyingProjectile> flyingProjectilesMap = new ConcurrentHashMap<>();
 
     /**
      * ProjectileManager
+     *
      * @param plugin - Cannons instance
      */
-    public ProjectileManager(Cannons plugin)
-    {
+    public ProjectileManager(Cannons plugin) {
         this.plugin = plugin;
     }
 
-    public org.bukkit.entity.Projectile spawnProjectile(Projectile projectile, UUID shooter, org.bukkit.projectiles.ProjectileSource source, Location playerLoc, Location spawnLoc, Vector velocity, UUID cannonId, ProjectileCause projectileCause)
-    {
+    public org.bukkit.entity.Projectile spawnProjectile(
+            Projectile projectile,
+            UUID shooter,
+            org.bukkit.projectiles.ProjectileSource source,
+            Location playerLoc,
+            Location spawnLoc,
+            Vector velocity,
+            UUID cannonId,
+            ProjectileCause projectileCause
+    ) {
         Objects.requireNonNull(shooter, "shooter for the projectile can't be null");
         World world = spawnLoc.getWorld();
 
         //set yaw, pitch for fireballs
         double v = velocity.length();
-        spawnLoc.setPitch((float) (Math.acos(velocity.getY()/v)*180.0/Math.PI - 90));
-        spawnLoc.setYaw((float) (Math.atan2(velocity.getZ(),velocity.getX())*180.0/Math.PI - 90));
+        spawnLoc.setPitch((float) (Math.acos(velocity.getY() / v) * 180.0 / Math.PI - 90));
+        spawnLoc.setYaw((float) (Math.atan2(velocity.getZ(), velocity.getX()) * 180.0 / Math.PI - 90));
 
         Entity pEntity = world.spawnEntity(spawnLoc, projectile.getProjectileEntity());
 
@@ -43,25 +53,30 @@ public class ProjectileManager
         pEntity.setVelocity(velocity);
 
         org.bukkit.entity.Projectile projectileEntity;
-        try
-        {
+        try {
             projectileEntity = (org.bukkit.entity.Projectile) pEntity;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             plugin.logDebug("Can't convert EntityType " + pEntity.getType() + " to projectile. Using additional Snowball");
             projectileEntity = (org.bukkit.entity.Projectile) world.spawnEntity(spawnLoc, EntityType.SNOWBALL);
             projectileEntity.setVelocity(velocity);
         }
 
-        if (projectile.isProjectileOnFire())
+        if (projectile.isProjectileOnFire()) {
             projectileEntity.setFireTicks(100);
+        }
         //projectileEntity.setTicksLived(2);
 
 
-
         //create a new flying projectile container
-        FlyingProjectile cannonball = new FlyingProjectile(projectile, projectileEntity, shooter, source, playerLoc, cannonId, projectileCause);
+        FlyingProjectile cannonball = new FlyingProjectile(
+                projectile,
+                projectileEntity,
+                shooter,
+                source,
+                playerLoc,
+                cannonId,
+                projectileCause
+        );
 
 
         flyingProjectilesMap.put(cannonball.getUID(), cannonball);
@@ -73,25 +88,21 @@ public class ProjectileManager
     }
 
 
-
     /**
      * detonate a timefused projectile mid air
+     *
      * @param cannonball - the cannonball to detonate
      */
-    private void detonateTimefuse(final FlyingProjectile cannonball)
-    {
-        if (cannonball.getProjectile().getTimefuse() > 0)
-        {
+    private void detonateTimefuse(final FlyingProjectile cannonball) {
+        if (cannonball.getProjectile().getTimefuse() > 0) {
 
             //Delayed Task
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,  new DelayedTask(cannonball.getUID())
-            {
-                public void run(Object object)
-                {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask(cannonball.getUID()) {
+                public void run(Object object) {
                     //find given UID in list
                     FlyingProjectile fproj = flyingProjectilesMap.get(object);
 
-                    if(fproj != null) {
+                    if (fproj != null) {
                         //detonate timefuse
                         org.bukkit.entity.Projectile projectile_entity = fproj.getProjectileEntity();
                         //the projectile might be null
@@ -101,23 +112,24 @@ public class ProjectileManager
                         }
                         flyingProjectilesMap.remove(cannonball.getUID());
                     }
-                }}, (long) (cannonball.getProjectile().getTimefuse()*20));
+                }
+            }, (long) (cannonball.getProjectile().getTimefuse() * 20));
         }
     }
 
 
     /**
      * detonates the given projectile entity
+     *
      * @param projectile - the projectile with this entity
      */
-    public void detonateProjectile(Entity projectile, BlockFace hitBlockFace)
-    {
-        if(!(projectile instanceof org.bukkit.entity.Projectile))
+    public void detonateProjectile(Entity projectile, BlockFace hitBlockFace) {
+        if (!(projectile instanceof org.bukkit.entity.Projectile)) {
             return;
+        }
 
         FlyingProjectile fproj = flyingProjectilesMap.get(projectile.getUniqueId());
-        if (fproj!=null)
-        {
+        if (fproj != null) {
             plugin.getExplosion().detonate(fproj, (org.bukkit.entity.Projectile) projectile, hitBlockFace);
             projectile.remove();
             flyingProjectilesMap.remove(fproj.getUID());
@@ -126,16 +138,17 @@ public class ProjectileManager
 
     /**
      * detonates the given projectile entity
+     *
      * @param cannonball - the projectile with this entity
-     * @param target the entity hit by the projectile
+     * @param target     the entity hit by the projectile
      */
-    public void directHitProjectile(Entity cannonball, Entity target)
-    {
-        if(cannonball == null || target == null) return;
+    public void directHitProjectile(Entity cannonball, Entity target) {
+        if (cannonball == null || target == null) {
+            return;
+        }
 
         FlyingProjectile fproj = flyingProjectilesMap.get(cannonball.getUniqueId());
-        if (fproj != null)
-        {
+        if (fproj != null) {
             org.bukkit.entity.Projectile projectile_entity = fproj.getProjectileEntity();
             if (!fproj.hasDetonated() && cannonball.isValid()) {
                 fproj.setHasDetonated(true);
@@ -148,11 +161,11 @@ public class ProjectileManager
 
     /**
      * returns true if the given entity is a cannonball projectile
+     *
      * @param projectile flying projectile
      * @return true if cannonball projectile
      */
-    public boolean isFlyingProjectile(Entity projectile)
-    {
+    public boolean isFlyingProjectile(Entity projectile) {
         FlyingProjectile fproj = flyingProjectilesMap.get(projectile.getUniqueId());
         return fproj != null;
     }
@@ -160,25 +173,29 @@ public class ProjectileManager
 
     /**
      * returns the list of all flying projectiles
+     *
      * @return - the list of all flying projectiles
      */
-    public ConcurrentHashMap<UUID, FlyingProjectile> getFlyingProjectiles()
-    {
+    public ConcurrentHashMap<UUID, FlyingProjectile> getFlyingProjectiles() {
         return flyingProjectilesMap;
     }
 
     /**
      * returns the projectile of which the player is passenger
      * if the player is attached to a projectile he will follow its movement
+     *
      * @param player is the passenger
      * @return the projectile or null
      */
-    public FlyingProjectile getAttachedProjectile(Player player)
-    {
-        if (player != null)
-            for (FlyingProjectile proj : flyingProjectilesMap.values())
-                if (proj.getShooterUID().equals(player.getUniqueId()))
+    public FlyingProjectile getAttachedProjectile(Player player) {
+        if (player != null) {
+            for (FlyingProjectile proj : flyingProjectilesMap.values()) {
+                if (proj.getShooterUID().equals(player.getUniqueId())) {
                     return proj;
+                }
+            }
+        }
         return null;
     }
+
 }

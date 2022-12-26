@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.Statement;
 
 public class CreateTableTask extends BukkitRunnable {
+
     @Override
     public void run() {
         String sql1 = String.format("CREATE TABLE IF NOT EXISTS %s (" +
@@ -51,4 +52,5 @@ public class CreateTableTask extends BukkitRunnable {
         }
 
     }
+
 }

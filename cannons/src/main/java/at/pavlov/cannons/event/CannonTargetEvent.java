@@ -10,16 +10,20 @@ import org.bukkit.event.HandlerList;
  * Fired when a Sentry cannon trys to target an entity
  */
 public class CannonTargetEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
     private final Cannon cannon;
     private final Target target;
     private boolean cancelled;
 
-    public CannonTargetEvent(Cannon cannon, Target player)
-    {
+    public CannonTargetEvent(Cannon cannon, Target player) {
         this.cannon = cannon;
         this.target = player;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Cannon getCannon() {
@@ -42,7 +46,4 @@ public class CannonTargetEvent extends Event {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
 }

@@ -7,20 +7,23 @@ import org.bukkit.event.HandlerList;
 
 import java.util.UUID;
 
-public class CannonUseEvent extends Event
-{
+public class CannonUseEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
     private final Cannon cannon;
     private final UUID player;
     private final InteractAction action;
     private boolean cancelled;
 
-    public CannonUseEvent(Cannon cannon, UUID player, InteractAction action)
-    {
+    public CannonUseEvent(Cannon cannon, UUID player, InteractAction action) {
         this.cannon = cannon;
         this.player = player;
         this.action = action;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Cannon getCannon() {
@@ -47,7 +50,4 @@ public class CannonUseEvent extends Event
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
 }

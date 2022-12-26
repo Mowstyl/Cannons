@@ -6,20 +6,21 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class CannonDestroyedEvent extends Event {
-	private static final HandlerList handlers = new HandlerList();
-	private final Cannon cannon;
+
+    private static final HandlerList handlers = new HandlerList();
+    private final Cannon cannon;
     private final BreakCause breakCause;
 
-	public CannonDestroyedEvent(Cannon cannon, BreakCause breakCause) {
+    public CannonDestroyedEvent(Cannon cannon, BreakCause breakCause) {
         this.cannon = cannon;
         this.breakCause = breakCause;
     }
-	
-	public HandlerList getHandlers() {
-		return handlers;
-	}
-	
+
     public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
+    public HandlerList getHandlers() {
         return handlers;
     }
 
@@ -30,4 +31,5 @@ public class CannonDestroyedEvent extends Event {
     public BreakCause getBreakCause() {
         return breakCause;
     }
+
 }

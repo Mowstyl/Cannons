@@ -29,7 +29,7 @@ public enum CommandList {
     private final String permission;
     private final Boolean adminCmd;
 
-    CommandList(String command, String usage, String permission, boolean adminCmd){
+    CommandList(String command, String usage, String permission, boolean adminCmd) {
         this.command = command;
         this.usage = usage;
         this.permission = permission;
@@ -48,7 +48,7 @@ public enum CommandList {
         return usage;
     }
 
-    public boolean isAdminCmd(){
+    public boolean isAdminCmd() {
         return this.adminCmd;
     }
 }

@@ -7,16 +7,20 @@ import org.bukkit.event.HandlerList;
 import java.util.UUID;
 
 public class CannonFireEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
     private final Cannon cannon;
     private final UUID player;
     private boolean cancelled;
 
-    public CannonFireEvent(Cannon cannon, UUID player)
-    {
+    public CannonFireEvent(Cannon cannon, UUID player) {
         this.cannon = cannon;
         this.player = player;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Cannon getCannon() {
@@ -39,7 +43,4 @@ public class CannonFireEvent extends Event {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
-    }
 }

@@ -5,30 +5,32 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
 
 
-public class CannonSign
-{
+public class CannonSign {
 
-	
-	/**
-	 * returns line written on the sign sign
-	 * @return
-	 */
-	public static String getLineOfThisSign(Block block, int line)
-	{
-        if (block == null) return null;
-		if (!(block instanceof WallSign)) return null;
 
-		Sign sign = (Sign) block.getState(false);
-		
-		return sign.getLine(line);
-	}
-	
+    /**
+     * returns line written on the sign sign
+     *
+     * @return
+     */
+    public static String getLineOfThisSign(Block block, int line) {
+        if (block == null) {
+            return null;
+        }
+        if (!(block instanceof WallSign)) {
+            return null;
+        }
 
-	
-	/**
-	 * returns the amount of gunpowder that is written on a cannon sign
-	 * @return
-	 */
+        Sign sign = (Sign) block.getState(false);
+
+        return sign.getLine(line);
+    }
+
+
+    /**
+     * returns the amount of gunpowder that is written on a cannon sign
+     * @return
+     */
 	/*
 	public int getGunpowderFromSign()
 	{

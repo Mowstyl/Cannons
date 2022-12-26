@@ -14,7 +14,6 @@ Install:
     Load your server
     Edit the newly created 'config.yml' in 'plugins/Cannons/' and set your preferences
 
-
 Uninstall:
 -----------------
 
