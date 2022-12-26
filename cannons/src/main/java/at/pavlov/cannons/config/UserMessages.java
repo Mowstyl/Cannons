@@ -40,15 +40,21 @@ public class UserMessages {
 
         //copy german language
         File localizationGerman = new File(plugin.getDataFolder(), "localization/localization_german.yml");
-
         localizationGerman.getParentFile().mkdirs();
         if (!localizationGerman.exists()) {
             CannonsUtil.copyFile(plugin.getResource("localization/localization_german.yml"), localizationGerman);
         }
+
         //copy english language
         File localizationEnglish = new File(plugin.getDataFolder(), "localization/localization_english.yml");
         if (!localizationEnglish.exists()) {
             CannonsUtil.copyFile(plugin.getResource("localization/localization.yml"), localizationEnglish);
+        }
+
+        //copy english language
+        File localizationSpanish = new File(plugin.getDataFolder(), "localization/localization_spanish.yml");
+        if (!localizationSpanish.exists()) {
+            CannonsUtil.copyFile(plugin.getResource("localization/localization_spanish.yml"), localizationSpanish);
         }
     }
 
