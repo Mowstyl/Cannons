@@ -1,0 +1,178 @@
+name: Cannons
+main: at.pavlov.cannons.Cannons
+api-version: 1.18
+version: "${version}"
+depend: [WorldEdit]
+softdepend: [Vault]
+author: DerPavlov
+description: Fire block build cannons and smash your enemies
+
+commands:
+  cannons:
+    description: Info how to use/build/adjust a cannon and to reload the plugin.
+
+permissions:
+  cannons.*:
+    description: Gives  permissions for loading, adjusting, firing and recall help with cannons
+    children:
+      cannons.player.*: true
+      cannons.admin.*: true
+      cannons.projectiles.*: true
+    default: false
+
+  cannons.player.*:
+    description: Gives single permissions for loading, adjusting, firing and recall help with cannons
+    children:
+      cannons.player.command: true
+      cannons.player.rename: true
+      cannons.player.build: true
+      cannons.player.dismantle: true
+      cannons.player.load: true
+      cannons.player.adjust: true
+      cannons.player.fire: true
+      cannons.player.autoaim: true
+      cannons.player.observer: true
+      cannons.player.info: true
+      cannons.player.tracking: true
+      cannons.player.autoreload: true
+      cannons.player.thermometer: true
+      cannons.player.ramrod: true
+      cannons.player.whitelist: true
+      cannons.player.help: true
+      cannons.player.reset: true
+      cannons.player.redstone: true
+      cannons.player.list: true
+      cannons.player.target: true
+      cannons.player.claim: true
+    default: op
+
+  cannons.player.command:
+    description: Allows a player to use the help commands
+    default: true
+  cannons.player.help:
+    description: Allows a player to request help with a cannon
+    default: true
+  cannons.player.rename:
+    description: Allows the player to give his cannons better names
+    default: false
+  cannons.player.build:
+    description: Allows a player to build a cannon
+    default: false
+  cannons.player.dismantle:
+    description: Allows a player to deconstruct a cannon when he is the owner
+    default: false
+  cannons.player.redstone:
+    description: Allows a player to use redstone with a cannon
+    default: false
+  cannons.player.load:
+    description: Allows a player to load a cannon
+    default: false
+  cannons.player.fire:
+    description: Allows a player to fire a cannon
+    default: false
+  cannons.player.adjust:
+    description: Allows a player to adjust a cannon
+    default: false
+  cannons.player.autoaim:
+    description: Allows a player to autoaim with a cannon
+    default: false
+  cannons.player.tracking:
+    description: Allows tracking of entities
+    default: false
+  cannons.player.observer:
+    description: Allows a player to see the impact prediction for selected cannons
+    default: false
+  cannons.player.info:
+    description: Allows a player to get information about the cannon
+    default: false
+  cannons.player.thermometer:
+    description: Allows a player to measure the temperature of a cannon with the thermometer item
+    default: false
+  cannons.player.ramrod:
+    description: Allows a player to use the ramrod tool
+    default: false
+  cannons.player.whitelist:
+    description: Allows a player to add/remove players from a cannon whitelist
+    default: false
+  cannons.player.autoreload:
+    description: Allows a player to use autoreload on a cannon
+    default: false
+  cannons.player.reset:
+    description: Allows a player to delete all of his build cannons.
+    default: false
+  cannons.player.list:
+    description: Allows a player to request a list of all his cannons
+    default: false
+  cannons.player.target:
+    description: Allows a owner to change the target mode of a sentry
+    default: false
+  cannons.player.claim:
+    description: Allows a player to claim cannons in the vicinity
+    default: false
+
+  cannons.projectile.*:
+    description: Gives all permissions for projectiles
+    children:
+      cannons.projectile.default: true
+    default: op
+
+  cannons.projectile.default:
+    description: Allows a player to use default projectiles
+    default: false
+
+  cannons.limit.*:
+    description: Resets limits
+    children:
+      cannons.limit.limitA: false
+      cannons.limit.limitB: false
+    default: false
+
+  cannons.limit.limitA:
+    description: Maximum amount of cannons a player can build
+    default: false
+  cannons.limit.limitB:
+    description: Maximum amount of cannons a player can build
+    default: false
+
+
+  cannons.admin.*:
+    description: Gives all admin rights
+    children:
+      cannons.admin.reload: true
+      cannons.admin.reset: true
+      cannons.admin.list: true
+      cannons.admin.create: true
+      cannons.admin.dismantle: true
+      cannons.admin.permissions: true
+      cannons.admin.give: true
+      cannons.admin.notarget: false
+      cannons.admin.blockdata: true
+    default: op
+
+  cannons.admin.reload:
+      description: Allows an admin to reload the config
+      default: op
+  cannons.admin.reset:
+      description: Allows an admin to delete all cannon of a player in the database
+      default: op
+  cannons.admin.list:
+      description: Allows an admin to list all cannon of a player
+      default: op
+  cannons.admin.create:
+      description: Allows an admin create a cannon just with the design file name
+      default: op
+  cannons.admin.dismantle:
+      description: Allows to deconstruct a cannon without being its owner
+      default: op
+  cannons.admin.permissions:
+      description: Allows an admin to list all default permissions for a player
+      default: op
+  cannons.admin.give:
+      description: Allows an admin give projectiles
+      default: op
+  cannons.admin.notarget:
+      description: Prevents the player from being target by sentry cannons
+      default: false
+  cannons.admin.blockdata:
+      description: Shows information about the blockdata
+      default: op
