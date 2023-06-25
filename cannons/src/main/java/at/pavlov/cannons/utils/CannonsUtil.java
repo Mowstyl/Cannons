@@ -86,8 +86,9 @@ public class CannonsUtil {
     public static boolean isFolderEmpty(String folderPath) {
         File file = new File(folderPath);
         if (file.isDirectory()) {
+            String[] files;
             //folder is not empty
-            return file.list().length == 0;
+            return (files = file.list()) == null || files.length == 0;
         }
         return true;
     }
@@ -969,13 +970,12 @@ public class CannonsUtil {
      * @return Offline player
      */
     public static OfflinePlayer getOfflinePlayer(String name) {
-        OfflinePlayer[] players = Bukkit.getOfflinePlayers();
-        for (OfflinePlayer player : players) {
-            if (player.getName().equals(name)) {
-                return player;
-            }
+        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+        if (!player.hasPlayedBefore() && !player.isOnline()) {
+            player = null;
         }
-        return null;
+
+        return player;
     }
 
     /**
@@ -989,12 +989,7 @@ public class CannonsUtil {
         if (bPlayer == null) {
             return false;
         }
-        if (bPlayer.isOnline()) {
-            Player player = (Player) bPlayer;
-            return player.isOnline();
-        } else {
-            return bPlayer.hasPlayedBefore();
-        }
+        return bPlayer.isOnline() || bPlayer.hasPlayedBefore();
     }
 
 

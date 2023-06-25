@@ -243,10 +243,8 @@ public class PlayerListener implements Listener {
             switch (material) {
                 // ##########  redstone torch fire
                 // off because it turn form off to on
-                case REDSTONE_TORCH:
-                case REDSTONE_WALL_TORCH:
+                case REDSTONE_TORCH, REDSTONE_WALL_TORCH -> {
                     cannon = cannonManager.getCannon(block.getRelative(BlockFace.UP).getLocation(), null);
-
                     if (cannon != null) {
                         // there is cannon next to the torch - check if the torch is
                         // place right
@@ -254,8 +252,8 @@ public class PlayerListener implements Listener {
                             MessageEnum message = fireCannon.redstoneFiring(cannon, InteractAction.fireRedstone);
                         }
                     }
-                    break;
-                case REDSTONE_WIRE:
+                }
+                case REDSTONE_WIRE -> {
                     // check all block next to this if there is a cannon
                     for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block)) {
                         cannon = cannonManager.getCannon(b.getLocation(), null);
@@ -268,9 +266,8 @@ public class PlayerListener implements Listener {
                         }
 
                     }
-                    break;
-                case REPEATER:
-                case COMPARATOR:
+                }
+                case REPEATER, COMPARATOR -> {
                     for (Block b : CannonsUtil.HorizontalSurroundingBlocks(block)) {
                         cannon = cannonManager.getCannon(b.getLocation(), null);
                         if (cannon != null) {
@@ -282,7 +279,7 @@ public class PlayerListener implements Listener {
 
                         }
                     }
-                    break;
+                }
             }
         }
 

@@ -23,17 +23,27 @@ public class FakeBlockEntry implements Cloneable {
     private long startTime;
 
 
-    public FakeBlockEntry(Location loc, Player player, FakeBlockType type, long duration) {
-        this.locX = loc.getBlockX();
-        this.locY = loc.getBlockY();
-        this.locZ = loc.getBlockZ();
-        this.world = loc.getWorld().getUID();
+    public FakeBlockEntry(int x, int y, int z, UUID worldUUID, UUID playerUUID, FakeBlockType type, long duration) {
+        this.locX = x;
+        this.locY = y;
+        this.locZ = z;
+        this.world = worldUUID;
 
-        this.player = player.getUniqueId();
+        this.player = playerUUID;
         this.type = type;
 
         this.startTime = System.currentTimeMillis();
         this.duration = duration;
+    }
+
+    public FakeBlockEntry(Location loc, Player player, FakeBlockType type, long duration) {
+        this(loc.getBlockX(),
+             loc.getBlockY(),
+             loc.getBlockZ(),
+             loc.getWorld().getUID(),
+             player.getUniqueId(),
+             type,
+             duration);
     }
 
 
@@ -105,7 +115,9 @@ public class FakeBlockEntry implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        FakeBlockEntry obj2 = (FakeBlockEntry) obj;
+        if (!(obj instanceof final FakeBlockEntry obj2)) {
+            return false;
+        }
         return this.locX == obj2.getLocX() && this.locY == obj2.getLocY() && this.locZ == obj2.getLocZ() && this.world.equals(obj2.getWorld())
                 && this.player.equals(obj2.getPlayer())
                 && this.type == obj2.getType();
@@ -113,6 +125,20 @@ public class FakeBlockEntry implements Cloneable {
 
     public FakeBlockType getType() {
         return type;
+    }
+
+    @Override
+    public FakeBlockEntry clone() {
+        FakeBlockEntry theClone = new FakeBlockEntry(
+                this.locX,
+                this.locY,
+                this.locZ,
+                this.world,
+                this.player,
+                this.type,
+                this.duration);
+        theClone.startTime = this.startTime;
+        return theClone;
     }
 
 }

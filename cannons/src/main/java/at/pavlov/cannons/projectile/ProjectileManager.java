@@ -97,8 +97,8 @@ public class ProjectileManager {
         if (cannonball.getProjectile().getTimefuse() > 0) {
 
             //Delayed Task
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask(cannonball.getUID()) {
-                public void run(Object object) {
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask<>(cannonball.getUID()) {
+                public void run(UUID object) {
                     //find given UID in list
                     FlyingProjectile fproj = flyingProjectilesMap.get(object);
 

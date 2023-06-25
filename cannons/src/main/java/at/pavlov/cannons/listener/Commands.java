@@ -24,6 +24,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class Commands implements TabExecutor {
 
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
 
         Player player = null;
         if (sender instanceof Player) {
@@ -1056,7 +1057,7 @@ public class Commands implements TabExecutor {
 
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command cmd, String commandLabel, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, Command cmd, @NotNull String commandLabel, String[] args) {
         List<String> cmdList = new ArrayList<>();
         if (cmd.getName().equalsIgnoreCase("cannons")) {
             String[] split = new String[args.length + 1];

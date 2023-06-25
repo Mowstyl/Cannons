@@ -305,9 +305,8 @@ public class FireCannon {
             double randomess = 1. + design.getFuseBurnTimeRandomness() * new Random().nextDouble();
             long delayTime = (long) (randomess * design.getFuseBurnTime() * 20.0 + i * projectile.getAutomaticFiringDelay() * 20.0);
             FireTaskWrapper fireTask = new FireTaskWrapper(cannon, playerUid, lastRound, projectileCause);
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask(fireTask) {
-                public void run(Object object) {
-                    FireTaskWrapper fireTask = (FireTaskWrapper) object;
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask<>(fireTask) {
+                public void run(FireTaskWrapper fireTask) {
                     fireTask(fireTask.getCannon(), fireTask.getPlayer(), fireTask.isRemoveCharge(), projectileCause);
                 }
             }, delayTime);
@@ -459,6 +458,7 @@ public class FireCannon {
             int maxSoundDist = config.getImitatedSoundMaximumDistance();
             CannonsUtil.imitateSound(loc, c.getCannonDesign().getSoundFiring(), maxSoundDist, maxVol);
 
+            /* Mowstyl: If the imitateSmoke line has been disabled, this won't be needed
             List<Player> players = new ArrayList<>();
             for (Player p : loc.getWorld().getPlayers()) {
                 Location pl = p.getLocation();
@@ -468,6 +468,7 @@ public class FireCannon {
                     players.add(p);
                 }
             }
+             */
             //imitateSmoke(c, players); // CCNet: Disable (optimization)
         }
     }

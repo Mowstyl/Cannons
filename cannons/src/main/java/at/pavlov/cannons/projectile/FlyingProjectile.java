@@ -1,6 +1,7 @@
 package at.pavlov.cannons.projectile;
 
 import at.pavlov.cannons.Enum.ProjectileCause;
+import at.pavlov.cannons.container.FakeBlockEntry;
 import at.pavlov.cannons.container.MovingObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -84,19 +85,15 @@ public class FlyingProjectile {
      * @return
      */
     public org.bukkit.entity.Projectile getProjectileEntity() {
-        Entity entity = Bukkit.getWorld(worldUID).getEntity(entityUID);
+        World world = Bukkit.getWorld(worldUID);
+        if (world == null) {
+            return null;
+        }
+        Entity entity = world.getEntity(entityUID);
         if (entity instanceof org.bukkit.entity.Projectile && entity.getUniqueId().equals(entityUID)) {
             return (org.bukkit.entity.Projectile) entity;
         }
         return null;
-        /*
-        for (Entity entity : world.getEntitiesByClass(org.bukkit.entity.Projectile.class)) {
-            if (entity instanceof org.bukkit.entity.Projectile && entity.getUniqueId().equals(entityUID)) {
-                return (org.bukkit.entity.Projectile) entity;
-            }
-        }
-
-         */
     }
 
     public Projectile getProjectile() {
@@ -252,8 +249,10 @@ public class FlyingProjectile {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof final FlyingProjectile obj2)) {
+            return false;
+        }
         //equal if the projectile entities are equal
-        FlyingProjectile obj2 = (FlyingProjectile) obj;
         return this.getUID().equals(obj2.getUID());
     }
 

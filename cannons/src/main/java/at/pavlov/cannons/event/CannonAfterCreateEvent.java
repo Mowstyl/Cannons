@@ -3,6 +3,7 @@ package at.pavlov.cannons.event;
 import at.pavlov.cannons.cannon.Cannon;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class CannonAfterCreateEvent extends Event {
         return handlers;
     }
 
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

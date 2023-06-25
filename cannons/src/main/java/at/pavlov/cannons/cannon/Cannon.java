@@ -311,6 +311,9 @@ public class Cannon {
         // find a loadable projectile in the chests
         for (Inventory inv : invlist) {
             for (ItemStack item : inv.getContents()) {
+                if (item == null) {
+                    continue;
+                }
                 Projectile projectile = ProjectileStorage.getProjectile(this, item);
                 if (projectile == null) {
                     continue;
@@ -967,11 +970,10 @@ public class Cannon {
     }
 
     /**
-     * return true if this block is a part of the loading interface - default is
-     * the barrel the barrel
+     * return true if this block is a part of the loading interface - default is the barrel
      *
-     * @param block
-     * @return
+     * @param block the block to check
+     * @return true if this block is a part of the loading interface
      */
     public boolean isLoadingBlock(Location block) {
         for (Location loc : design.getLoadingInterface(this)) {
@@ -984,10 +986,8 @@ public class Cannon {
 
 
     /**
-     * return true if this location where the torch interacts with the cannon
-     *
-     * @param block
-     * @return
+     * @param block the block to check
+     * @return true if this is the location where the torch interacts with the cannon
      */
     public boolean isChestInterface(Location block) {
         for (Location loc : design.getChestsAndSigns(this)) {
@@ -999,7 +999,7 @@ public class Cannon {
     }
 
     /**
-     * return true if this location where the torch interacts with the cannon
+     * return true if this is the location where the torch interacts with the cannon
      * does not check the ID
      *
      * @param loc
@@ -1135,11 +1135,10 @@ public class Cannon {
     }
 
     /**
-     * returns true if the player has the permission to place redstone near a cannon.
      * player = null will also return true
      *
      * @param player player operating the cannon
-     * @return
+     * @return true if the player has the permission to place redstone near a cannon
      */
     public MessageEnum checkRedstonePermission(UUID player) {
         Player playerBukkit = null;
@@ -1530,12 +1529,12 @@ public class Cannon {
         if (loadedProjectile == null) {
             return lastFiredProjectile.getVelocity() * design.getMultiplierVelocity() * (1 - Math.pow(
                     2,
-                    -4 * lastFiredGunpowder / loadableGunpowder
+                    (double) (-4 * lastFiredGunpowder) / loadableGunpowder
             ));
         } else {
             return loadedProjectile.getVelocity() * design.getMultiplierVelocity() * (1 - Math.pow(
                     2,
-                    -4 * loadedGunpowder / loadableGunpowder
+                    (double) (-4 * loadedGunpowder) / loadableGunpowder
             ));
         }
     }
@@ -1619,14 +1618,14 @@ public class Cannon {
     public String getSignString(int index) {
 
         switch (index) {
-
-            case 0:
+            case 0 -> {
                 // Cannon name in the first line
                 if (cannonName == null) {
                     cannonName = "missing Name";
                 }
                 return cannonName;
-            case 1:
+            }
+            case 1 -> {
                 // Cannon owner in the second
                 if (owner == null) {
                     return "missing Owner";
@@ -1636,16 +1635,19 @@ public class Cannon {
                     return "not found";
                 }
                 return bPlayer.getName();
-            case 2:
+            }
+            case 2 -> {
                 // loaded Gunpowder/Projectile
                 if (loadedProjectile != null) {
                     return "p: " + loadedGunpowder + " c: " + loadedProjectile.getMaterialInformation();
                 } else {
                     return "p: " + loadedGunpowder + " c: " + "0:0";
                 }
-            case 3:
+            }
+            case 3 -> {
                 // angles
                 return horizontalAngle + "/" + verticalAngle;
+            }
         }
         return "missing";
     }

@@ -26,7 +26,7 @@ public class CannonSign {
         return sign.getLine(line);
     }
 
-
+    /*
     /**
      * returns the amount of gunpowder that is written on a cannon sign
      * @return

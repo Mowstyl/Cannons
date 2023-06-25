@@ -37,7 +37,7 @@ public class TargetManager {
         for (Target target : targets.values()) {
             Location newLoc = target.getCenterLocation();
             Vector box = newLoc.subtract(center).toVector();
-            if (newLoc.getWorld().equals(center
+            if (newLoc.getWorld().getUID().equals(center
                     .getWorld()
                     .getUID()) && Math.abs(box.getX()) < lengthX / 2 && Math.abs(box.getY()) < lengthY / 2 && Math.abs(box.getZ()) < lengthZ / 2) {
                 newTargetList.add(target);

@@ -4,6 +4,7 @@ import at.pavlov.cannons.projectile.Projectile;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class CannonsEntityDeathEvent extends Event {
         this.cancelled = cancelled;
     }
 
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

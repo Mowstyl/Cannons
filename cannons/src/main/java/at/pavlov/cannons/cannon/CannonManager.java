@@ -313,9 +313,8 @@ public class CannonManager {
 
         //delay the remove task, so it fits to the sound
         RemoveTaskWrapper task = new RemoveTaskWrapper(cannon, breakCannon, canExplode, cause, removeEntry, ignoreInvalid);
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask(task) {
-            public void run(Object object) {
-                RemoveTaskWrapper task = (RemoveTaskWrapper) object;
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new DelayedTask<>(task) {
+            public void run(RemoveTaskWrapper task) {
                 Cannon cannon = task.getCannon();
                 BreakCause cause = task.getCause();
 
@@ -596,6 +595,9 @@ public class CannonManager {
                     return null;
                 }
                 Player player = Bukkit.getPlayer(owner);
+                if (player == null) {
+                    return null;
+                }
 
                 //can this player can build one more cannon
                 MessageEnum message = canBuildCannon(cannon, owner);

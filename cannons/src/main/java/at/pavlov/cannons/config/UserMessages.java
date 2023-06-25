@@ -346,7 +346,7 @@ public class UserMessages {
             message = message.replace("DESCRIPTION", cannon.getCannonDesign().getDescription());
             if (cannon.getOwner() != null) {
                 OfflinePlayer offplayer = Bukkit.getOfflinePlayer(cannon.getOwner());
-                if (offplayer != null) {
+                if (offplayer != null && (offplayer.hasPlayedBefore() || offplayer.isOnline())) {
                     message = message.replace("OWNER", offplayer.getName());
                 }
             }
@@ -356,7 +356,7 @@ public class UserMessages {
             //pushing projectile
             message = message.replace("PUSHING_LEFT", Integer.toString(cannon.getProjectilePushed()));
             // CCNet - magazine size
-            message = message.replace("CHARGES_REMAINING", Integer.toString((int) Math.floor(cannon.getChargesRemaining())));
+            message = message.replace("CHARGES_REMAINING", Integer.toString(cannon.getChargesRemaining()));
             //economy
             if (plugin.getEconomy() != null) {
                 message = message.replace(
@@ -375,7 +375,7 @@ public class UserMessages {
             // show the name of the last whitelisted player
             if (cannon.getLastWhitelisted() != null) {
                 OfflinePlayer whiteplayer = Bukkit.getOfflinePlayer(cannon.getLastWhitelisted());
-                if (whiteplayer != null) {
+                if (whiteplayer != null && (whiteplayer.hasPlayedBefore() || whiteplayer.isOnline())) {
                     message = message.replace("LASTWHITELISTED", whiteplayer.getName());
                 }
             }

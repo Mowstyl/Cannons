@@ -4,6 +4,7 @@ import at.pavlov.cannons.Enum.BreakCause;
 import at.pavlov.cannons.cannon.Cannon;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class CannonDestroyedEvent extends Event {
 
@@ -20,7 +21,7 @@ public class CannonDestroyedEvent extends Event {
         return handlers;
     }
 
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

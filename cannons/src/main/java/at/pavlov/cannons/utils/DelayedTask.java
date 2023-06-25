@@ -1,10 +1,10 @@
 package at.pavlov.cannons.utils;
 
-public abstract class DelayedTask implements Runnable {
+public abstract class DelayedTask<T> implements Runnable {
 
-    private final Object wrapper;
+    private final T wrapper;
 
-    public DelayedTask(Object wrapper) {
+    public DelayedTask(T wrapper) {
         this.wrapper = wrapper;
     }
 
@@ -13,6 +13,6 @@ public abstract class DelayedTask implements Runnable {
         run(wrapper);
     }
 
-    public abstract void run(Object wrapper2);
+    public abstract void run(T wrapper2);
 
 }

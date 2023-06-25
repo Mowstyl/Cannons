@@ -19,10 +19,10 @@ import java.util.Scanner;
 //small class as at.pavlov.cannons.container for item id and data
 public class ItemHolder {
 
-    private static final Class localeClass = null;
-    private static final Class craftItemStackClass = null;
-    private static final Class nmsItemStackClass = null;
-    private static final Class nmsItemClass = null;
+    private static final Class<?> localeClass = null;
+    private static final Class<?> craftItemStackClass = null;
+    private static final Class<?> nmsItemStackClass = null;
+    private static final Class<?> nmsItemClass = null;
     private static final String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
     private static final String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
     private Material material;
@@ -71,22 +71,9 @@ public class ItemHolder {
     }
 
     public ItemHolder(Material material, String description, List<String> lore) {
-        if (material != null) {
-            this.material = material;
-        } else {
-            this.material = Material.AIR;
-        }
-        if (description != null) {
-            this.displayName = ChatColor.translateAlternateColorCodes('&', description);
-        } else {
-            this.displayName = "";
-        }
-
-        if (lore != null) {
-            this.lore = lore;
-        } else {
-            this.lore = new ArrayList<>();
-        }
+        this.material = material != null ? material : Material.AIR;
+        this.displayName = description != null ? ChatColor.translateAlternateColorCodes('&', description) : "";
+        this.lore = lore != null ? lore : new ArrayList<>();
     }
 
     public ItemHolder(String str) {

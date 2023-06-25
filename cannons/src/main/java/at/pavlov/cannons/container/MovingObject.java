@@ -2,8 +2,10 @@ package at.pavlov.cannons.container;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -17,7 +19,7 @@ public class MovingObject {
 
 
     public MovingObject(Location loc, Vector vel, EntityType entityType) {
-        world = loc.getWorld().getUID();
+        this.world = loc.getWorld().getUID();
         this.loc = loc.toVector();
         this.vel = vel;
         this.entityType = entityType;
@@ -88,8 +90,12 @@ public class MovingObject {
      *
      * @return the location where the projectile should be
      */
-    public Location getLocation() {
-        return loc.toLocation(Bukkit.getWorld(world));
+    public @Nullable Location getLocation() {
+        World world = Bukkit.getWorld(this.world);
+        if (world == null) {
+            return null;
+        }
+        return loc.toLocation(world);
     }
 
     public void setLocation(Location loc) {

@@ -33,12 +33,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.LingeringPotion;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SpectralArrow;
-import org.bukkit.entity.SplashPotion;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -76,18 +75,18 @@ public class CreateExplosion {
     }
 
     /**
-     * Breaks a obsidian/water/lava blocks if the projectile has superbreaker
+     * Breaks an obsidian/water/lava blocks if the projectile has superbreaker
      *
-     * @param block
-     * @param blocklist
-     * @param superBreaker
+     * @param block the block to break
+     * @param blocklist list of broken blocks. block will be added to it if broken
+     * @param superBreaker if the projectile used has superbreaker
      * @param blockDamage  break blocks if true
-     * @return true if the block can be destroyed
+     * @return true if the block can be destroyed or passed through
      */
     private boolean breakBlock(Block block, List<Block> blocklist, Boolean superBreaker, Boolean blockDamage) {
         BlockData destroyedBlock = block.getBlockData();
 
-        // air is not an block to break, so ignore it
+        // air is not a block to break, so ignore it
         if (!destroyedBlock.getMaterial().equals(Material.AIR)) {
             // if it is unbreakable, ignore it
             for (BlockData unbreakableBlock : this.config.getUnbreakableBlocks()) {
@@ -133,7 +132,7 @@ public class CreateExplosion {
      * breaks blocks that are on the trajectory of the projectile. The projectile is
      * stopped by impenetratable blocks (obsidian)
      *
-     * @param cannonball
+     * @param cannonball the projectile thrown
      * @return the location after the piercing event
      */
     private Location blockBreaker(FlyingProjectile cannonball, org.bukkit.entity.Projectile projectile_entity) {
@@ -169,12 +168,11 @@ public class CreateExplosion {
         }
         plugin.logDebug("velocity: " + vel.length() + " percent of max velocity: " + vel.length() / projectile.getVelocity() + " penetration: " + penetration + " randomness: " + randomness);
 
-        blocklist.clear();
         if (penetration > 0) {
             BlockIterator iter2 = new BlockIterator(world, impactLoc.toVector(), vel.normalize(), 0, penetration);
             while (iter2.hasNext()) {
                 Block next = iter2.next();
-                // if block can be destroyed the the iterator will check the next block. Else
+                // if block can be destroyed the iterator will check the next block. Else
                 // the projectile will explode
                 if (!this.breakBlock(next, blocklist, superbreaker, doesBlockDamage)) {
                     // found indestructible block
@@ -251,7 +249,7 @@ public class CreateExplosion {
     }
 
     /**
-     * places a entity on the given location and pushes it away from the impact
+     * places an entity on the given location and pushes it away from the impact
      *
      * @param cannonball     the involved projectile
      * @param loc            location of the spawn
@@ -406,23 +404,9 @@ public class CreateExplosion {
                 }
             }
             // ThrownPotion
-            if (entity instanceof SplashPotion pentity) {
+            if (entity instanceof ThrownPotion pentity) {
                 try {
-                    ItemStack potion = new ItemStack(Material.SPLASH_POTION);
-                    PotionMeta meta = (PotionMeta) potion.getItemMeta();
-                    meta.setBasePotionData(CannonsUtil.parsePotionData(
-                            entityHolder.getData().get(EntityDataType.POTION_EFFECT), meta.getBasePotionData()));
-                    potion.setItemMeta(meta);
-                    pentity.setItem(potion);
-                } catch (Exception e) {
-                    this.plugin.logSevere("error while converting entity data for "
-                            + cannonball.getProjectile().getProjectileId() + " occurred: " + e);
-                }
-            }
-            // LingeringPotion
-            if (entity instanceof LingeringPotion pentity) {
-                try {
-                    ItemStack potion = new ItemStack(Material.LINGERING_POTION);
+                    ItemStack potion = new ItemStack(pentity.getItem().getType());
                     PotionMeta meta = (PotionMeta) potion.getItemMeta();
                     meta.setBasePotionData(CannonsUtil.parsePotionData(
                             entityHolder.getData().get(EntityDataType.POTION_EFFECT), meta.getBasePotionData()));
@@ -489,7 +473,6 @@ public class CreateExplosion {
         Projectile projectile = cannonball.getProjectile();
         Location impactLoc = cannonball.getImpactLocation();
 
-        Random r = new Random();
         Location placeLoc;
 
         double spread = projectile.getSpawnEntityRadius();
@@ -508,7 +491,7 @@ public class CreateExplosion {
                 // get new position
                 placeLoc = CannonsUtil.randomPointInSphere(impactLoc, spread);
 
-                // check a entity can spawn on this block if it is a living entity
+                // check an entity can spawn on this block if it is a living entity
                 if (this.canPlaceEntity(placeLoc.getBlock()) || !spawn.getType().isAlive()) {
                     placedEntities++;
                     // place the entity
@@ -565,7 +548,6 @@ public class CreateExplosion {
         Projectile projectile = cannonball.getProjectile();
         Location impactLoc = cannonball.getImpactLocation();
 
-        Random r = new Random();
         Location placeLoc;
 
         double spread = projectile.getSpawnBlockRadius();
@@ -584,7 +566,7 @@ public class CreateExplosion {
                 // get location to place block
                 placeLoc = CannonsUtil.randomPointInSphere(impactLoc, spread);
 
-                // check a entity can spawn on this block
+                // check an entity can spawn on this block
                 if (this.canPlaceBlock(placeLoc.getBlock())) {
                     placedBlocks++;
                     // place the block
@@ -599,7 +581,7 @@ public class CreateExplosion {
     }
 
     /**
-     * returns true if an falling block can be place on this block
+     * returns true if a falling block can be place on this block
      *
      * @param block location to spawn the entity
      * @return true if the block is empty or liquid
@@ -615,7 +597,7 @@ public class CreateExplosion {
      * @return true if there can be an entity spawned
      */
     private boolean canPlaceEntity(Block block) {
-        // this block an the block underneath should be empty
+        // this block and the block underneath should be empty
         return this.canPlaceBlock(block) && this.canPlaceBlock(block.getRelative(BlockFace.DOWN));
     }
 
@@ -624,7 +606,7 @@ public class CreateExplosion {
      *
      * @param impact starting point
      * @param target end point
-     * @return number of non AIR block between the locations
+     * @return number of non-AIR block between the locations
      */
     private int checkLineOfSight(Location impact, Location target) {
         int blockingBlocks = 0;
@@ -647,9 +629,9 @@ public class CreateExplosion {
     /**
      * Gives a player next to an explosion an entity effect
      *
-     * @param impactLoc
-     * @param next
-     * @param cannonball
+     * @param impactLoc where did the projectile land
+     * @param next entity that was hit by the projectile
+     * @param cannonball the projectile
      */
     private void applyPotionEffect(Location impactLoc, Entity next, FlyingProjectile cannonball) {
         Projectile projectile = cannonball.getProjectile();
@@ -690,9 +672,9 @@ public class CreateExplosion {
      * Returns the amount of damage the livingEntity receives due to explosion of
      * the projectile
      *
-     * @param impactLoc
-     * @param next
-     * @param cannonball
+     * @param impactLoc where did the projectile land
+     * @param next entity that was hit by the projectile
+     * @param cannonball the projectile
      * @return - damage done to the entity
      */
     private double getPlayerDamage(Location impactLoc, Entity next, FlyingProjectile cannonball) {
@@ -740,8 +722,8 @@ public class CreateExplosion {
     /**
      * Returns the amount of damage dealt to an entity by the projectile
      *
-     * @param cannonball
-     * @param target
+     * @param cannonball the projectile
+     * @param target entity that was hit by the projectile
      * @return return the amount of damage done to the living entity
      */
     private double getDirectHitDamage(FlyingProjectile cannonball, Entity target) {
@@ -881,7 +863,7 @@ public class CreateExplosion {
             );
             this.sendExplosionToPlayers(projectile, impactLoc, projectile.getSoundImpactProtected());
         } else {
-            // if the explosion power is negative there will be only a arrow impact sound
+            // if the explosion power is negative there will be only an arrow impact sound
             if (explosion_power >= 0) {
                 // get affected entities
                 for (Entity cEntity : projectile_entity.getNearbyEntities(explosion_power, explosion_power,
@@ -902,10 +884,10 @@ public class CreateExplosion {
             this.plugin.sendImpactMessage(player, impactLoc, canceled);
         }
 
-        // do nothing if the projectile impact was canceled or it is underwater with
+        // do nothing if the projectile impact was canceled, or it is underwater with
         // deactivated
         if (!canceled) {
-            // if the player is too far away, there will be a imitated explosion made of
+            // if the player is too far away, there will be an imitated explosion made of
             // fake blocks
             this.sendExplosionToPlayers(projectile, impactLoc, projectile.getSoundImpact());
             // place blocks around the impact like webs, lava, water
@@ -982,10 +964,9 @@ public class CreateExplosion {
                 double delay = projectile.getClusterExplosionsMinDelay() + Math.random()
                         * (projectile.getClusterExplosionsMaxDelay() - projectile.getClusterExplosionsMinDelay());
                 this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin,
-                        new DelayedTask(cannonball) {
+                        new DelayedTask<>(cannonball) {
                             @Override
-                            public void run(Object object) {
-                                FlyingProjectile cannonball = (FlyingProjectile) object;
+                            public void run(FlyingProjectile cannonball) {
                                 Projectile proj = cannonball.getProjectile();
 
                                 Location expLoc = CannonsUtil.randomPointInSphere(
@@ -1124,11 +1105,9 @@ public class CreateExplosion {
             return;
         }
 
-        this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask(cannonball) {
+        this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask<>(cannonball) {
             @Override
-            public void run(Object object) {
-                FlyingProjectile cannonball = (FlyingProjectile) object;
-
+            public void run(FlyingProjectile cannonball) {
                 Projectile projectile = cannonball.getProjectile();
                 Location impactLoc = cannonball.getImpactLocation();
 
@@ -1195,7 +1174,7 @@ public class CreateExplosion {
         fw.detonate(); // CCNet - detonate instantly
 
 		/*
-		// detonate firework after 1tick. This seems to works much better than
+		// detonate firework after 1tick. This seems to work much better than
 		// detonating instantaneously
 		this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new DelayedTask(fw) {
 			@Override

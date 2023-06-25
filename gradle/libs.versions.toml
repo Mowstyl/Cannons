@@ -1,11 +1,11 @@
 [versions]
 # Platforms
-minecraft = "1.19.3-R0.1-SNAPSHOT"
+minecraft = "1.20.1-R0.1-SNAPSHOT"
 spotbugs = "4.7.3"
 
 # Minecraft Plugins
-worldedit = "7.2.13"
-fawe = "2.5.0"
+worldedit = "7.3.0-SNAPSHOT"
+fawe = "2.6.3"
 
 # Gradle plugins
 paperweight = "1.4.0"

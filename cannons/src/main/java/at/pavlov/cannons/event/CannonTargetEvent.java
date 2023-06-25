@@ -4,6 +4,7 @@ import at.pavlov.cannons.cannon.Cannon;
 import at.pavlov.cannons.container.Target;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -42,7 +43,7 @@ public class CannonTargetEvent extends Event {
         this.cancelled = cancelled;
     }
 
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

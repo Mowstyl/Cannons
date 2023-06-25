@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class ProjectileImpactEvent extends Event {
             Location impactLocation,
             UUID shooter,
             FlyingProjectile flyingProjectile,
-            BlockFace hitBlockFace
+            @Nullable BlockFace hitBlockFace
     ) {
         this.projectile = projectile;
         this.impactLocation = impactLocation;
@@ -88,7 +89,7 @@ public class ProjectileImpactEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

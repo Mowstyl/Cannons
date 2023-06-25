@@ -10,6 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -36,13 +38,17 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void blockExplodeEvent(BlockExplodeEvent event) {
         if (plugin.getMyConfig().isRelayExplosionEvent()) {
+            ArmorStand dummy = (ArmorStand) event.getBlock().getWorld().spawnEntity(event.getBlock().getLocation(),
+                    EntityType.ARMOR_STAND);
+            dummy.setInvisible(true);
             EntityExplodeEvent explodeEvent = new EntityExplodeEvent(
-                    null,
+                    dummy,
                     event.getBlock().getLocation(),
                     event.blockList(),
                     event.getYield()
             );
             Bukkit.getServer().getPluginManager().callEvent(explodeEvent);
+            dummy.remove();
             event.setCancelled(explodeEvent.isCancelled());
         }
 
@@ -65,7 +71,7 @@ public class BlockListener implements Listener {
     /**
      * Water will not destroy button and torches
      *
-     * @param event
+     * @param event the event that was fired
      */
     @EventHandler
     public void BlockFromTo(BlockFromToEvent event) {
@@ -82,7 +88,7 @@ public class BlockListener implements Listener {
     /**
      * prevent fire on cannons
      *
-     * @param event
+     * @param event the event that was fired
      */
     @EventHandler
     public void BlockSpread(BlockSpreadEvent event) {
